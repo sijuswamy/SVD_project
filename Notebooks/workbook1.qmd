@@ -1,0 +1,663 @@
+---
+title: SVD workbook
+format: html
+jypiter: python3
+---
+
+
+## A starting example
+
+An example demonstrating the image compression using SVD is given below.
+
+:::{.panel-tabset}
+
+## Code
+```{.matlab}
+
+% Read and convert the image to grayscale
+img = imread('amrita_campus.jpg'); % Specify your image file
+gray_img = rgb2gray(img); % Convert to grayscale
+A = double(gray_img); % Convert to double for SVD computation
+
+% Apply Singular Value Decomposition (SVD)
+[U, S, V] = svd(A)
+
+% Choose the number of singular values to keep for compression
+k = 50; % You can adjust this value to see different compression levels
+
+% Create a compressed version of the image using the first k singular values
+S_k = zeros(size(A)); % Initialize a zero matrix for S_k
+S_k(1:k, 1:k) = S(1:k, 1:k); % Keep only the top k singular values
+
+% Reconstruct the compressed image
+A_k = U*S_k*V'; % Reconstruct the image from the reduced SVD
+
+% Display the original and compressed images
+figure;
+subplot(1, 2, 1);
+imshow(uint8(A)); % Display original image
+title('Original Image');
+
+subplot(1, 2, 2);
+imshow(uint8(A_k)); % Display compressed image
+title(['Compressed Image (k = ', num2str(k), ')']);
+```
+
+## Output
+
+```{.python}
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+
+# Read and convert the image to grayscale
+img = Image.open('amrita_campus.jpg')  # Specify your image file
+gray_img = img.convert('L')  # Convert to grayscale
+A = np.array(gray_img, dtype=np.float64)  # Convert to float64 for SVD computation
+original=A
+# Apply Singular Value Decomposition (SVD)
+U, S, Vt = np.linalg.svd(A, full_matrices=False)
+
+# Choose the number of singular values to keep for compression
+k = 50  # You can adjust this value to see different compression levels
+
+# Create a compressed version of the image using the first k singular values
+S_k = np.zeros_like(A)  # Initialize a zero matrix for S_k
+S_k[:k, :k] = np.diag(S[:k])  # Keep only the top k singular values
+
+# Reconstruct the compressed image
+A_k = np.dot(U[:, :k], np.dot(S_k[:k, :k], Vt[:k, :]))  # Reconstruct the image from the reduced SVD
+
+# Display the original and compressed images
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.imshow(A, cmap='gray', vmin=0, vmax=255)  # Display original image
+plt.title('Original Image')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.imshow(A_k, cmap='gray', vmin=0, vmax=255)  # Display compressed image
+plt.title(f'Compressed Image (k = {k})')
+plt.axis('off')
+
+plt.show()
+```
+:::
+
+## Assessing quality of compression
+
+
+:::{.panel-tabset}
+
+### Code
+
+```{.matlab}
+% Calculate Mean Squared Error (MSE)
+mse = mean((A(:) - A_k(:)).^2);
+
+% Calculate Peak Signal-to-Noise Ratio (PSNR)
+max_pixel_value = 255; % Maximum pixel value for 8-bit images
+psnr = 10 * log10((max_pixel_value^2) / mse);
+
+% Calculate sizes
+original_size = numel(A) * 8; % Size of the original image in bytes (double data type)
+compressed_size = (k * (size(A, 1) + size(A, 2))) * 8; % Size of compressed representation (U, S_k, V)
+
+% Display results
+fprintf('Mean Squared Error (MSE): %.4f\n', mse);
+fprintf('Peak Signal-to-Noise Ratio (PSNR): %.4f dB\n', psnr);
+fprintf('Original Image Size: %.2f KB\n', original_size / 1024); % Convert to KB
+fprintf('Compressed Image Size: %.2f KB\n', compressed_size / 1024); % Convert to KB
+fprintf('Size Reduction: %.2f KB\n', (original_size - compressed_size) / 1024); % Convert to KB
+```
+
+### Output
+
+```{.python}
+import numpy as np
+from skimage.metrics import structural_similarity as ssim
+import math
+# Mean Squared Error (MSE)
+mse = np.mean((A - A_k) ** 2)
+
+# Peak Signal-to-Noise Ratio (PSNR)
+max_pixel_value = 255.0  # For an 8-bit image
+psnr = 10 * np.log10((max_pixel_value ** 2) / mse)
+
+# Structural Similarity Index (SSIM)
+ssim_index = ssim(A, A_k, data_range=max_pixel_value)
+
+# Compression Ratio (CR)
+original_size = A.nbytes
+compressed_size = (U[:, :k].nbytes + S_k[:k, :k].nbytes + Vt[:k, :].nbytes)
+compression_ratio = original_size / compressed_size
+
+# Normalized Cross-Correlation (NCC)
+ncc = np.sum(A * A_k) / np.sqrt(np.sum(A ** 2) * np.sum(A_k ** 2))
+# Display results
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Peak Signal-to-Noise Ratio (PSNR): {psnr:.4f} dB")
+print(f"Structural Similarity Index (SSIM): {ssim_index:.4f}")
+print(f"Compression Ratio (CR): {compression_ratio:.2f}")
+print(f"Normalized Cross-Correlation (NCC): {ncc:.4f}")
+print(f'Original Image Size: {original_size / 1024:.2f} KB')  # Convert to KB
+print(f'Compressed Image Size: {compressed_size / 1024:.2f} KB')  # Convert to KB
+print(f'Size Reduction: {(original_size - compressed_size) / 1024:.2f} KB') 
+```
+:::
+
+
+
+```{.python}
+#pip install PyWavelets
+import cv2
+import numpy as np
+import pywt
+from skimage.metrics import structural_similarity as ssim
+import matplotlib.pyplot as plt
+
+# Load and convert image to grayscale
+img = cv2.imread('amrita_campus.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Function to display images side-by-side
+def display_images(original, compressed, title):
+    plt.figure(figsize=(10,5))
+    plt.subplot(1, 2, 1)
+    plt.imshow(original, cmap='gray')
+    plt.title("Original Image")
+    plt.subplot(1, 2, 2)
+    plt.imshow(compressed, cmap='gray')
+    plt.title(title)
+    plt.show()
+
+# 1. Discrete Cosine Transform (DCT) Compression
+def dct_compression(img, k=50):
+    img = img.astype(np.float32)
+    dct_img = cv2.dct(img)  # Apply DCT
+    dct_img[np.abs(dct_img) < k] = 0  # Thresholding
+    compressed_img = cv2.idct(dct_img)  # Apply inverse DCT
+    display_images(img, compressed_img, "DCT Compressed Image")
+    return compressed_img
+
+# 2. Wavelet Transform Compression (JPEG 2000 equivalent)
+def wavelet_compression(img, wavelet='haar', level=1, threshold=10):
+    coeffs = pywt.wavedec2(img, wavelet, level=level)
+    coeffs_thresholded = []
+    for c in coeffs:
+        if isinstance(c, tuple):  # For detail coefficients
+            coeffs_thresholded.append(tuple(pywt.threshold(arr, threshold, mode='soft') for arr in c))
+        else:  # For approximation coefficients
+            coeffs_thresholded.append(pywt.threshold(c, threshold, mode='soft'))
+    compressed_img = pywt.waverec2(coeffs_thresholded, wavelet)
+    display_images(img, compressed_img, "Wavelet Compressed Image")
+    return compressed_img
+
+# 3. Fractal Compression (simplified example with downsampling)
+def fractal_compression(img, scale_factor=0.5):
+    small_img = cv2.resize(img, (0, 0), fx=scale_factor, fy=scale_factor)
+    compressed_img = cv2.resize(small_img, (img.shape[1], img.shape[0]))  # Upscale back
+    display_images(img, compressed_img, "Fractal Compressed Image (downsampled)")
+    return compressed_img
+
+# 4. Run-Length Encoding (RLE) Compression
+def rle_compression(img):
+    pixels = img.flatten()
+    rle = []
+    i = 0
+    while i < len(pixels):
+        count = 1
+        while i + 1 < len(pixels) and pixels[i] == pixels[i + 1]:
+            i += 1
+            count += 1
+        rle.append((pixels[i], count))
+        i += 1
+    # Decoding RLE for display (just a simple reconstruction)
+    decompressed = np.concatenate([np.full(count, val) for val, count in rle])
+    decompressed_img = decompressed.reshape(img.shape)
+    display_images(img, decompressed_img, "RLE Compressed Image")
+    return decompressed_img
+
+# 5. Predictive Coding Compression
+def predictive_coding_compression(img):
+    img = img.astype(np.int16)  # To handle negative differences
+    prediction_error = img.copy()
+    for i in range(1, img.shape[0]):
+        for j in range(1, img.shape[1]):
+            prediction = (img[i-1, j] + img[i, j-1]) // 2
+            prediction_error[i, j] = img[i, j] - prediction
+    compressed_img = np.clip(prediction_error + img.mean(), 0, 255).astype(np.uint8)
+    display_images(img, compressed_img, "Predictive Coded Image")
+    return compressed_img
+
+# Run all compression methods
+dct_compressed = dct_compression(img)
+wavelet_compressed = wavelet_compression(img)
+fractal_compressed = fractal_compression(img)
+rle_compressed = rle_compression(img)
+predictive_coded = predictive_coding_compression(img)
+
+```
+
+```{.python}
+import numpy as np
+import cv2
+import pywt
+import matplotlib.pyplot as plt
+
+def load_image(file_path):
+    img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)  # Load image in grayscale
+    return img
+
+def calculate_metrics(original, compressed):
+    mse = np.mean((original - compressed) ** 2)
+    psnr = 10 * np.log10(255**2 / mse) if mse != 0 else float('inf')
+    
+    # Update SSIM to include data_range
+    from skimage.metrics import structural_similarity as ssim
+    ssim_value = ssim(original, compressed, data_range=original.max() - original.min())
+    
+    return mse, psnr, ssim_value
+
+def svd_compression(img, k=50):
+    A = img.astype(np.float32)
+    U, S, Vt = np.linalg.svd(A, full_matrices=False)
+    S_k = np.zeros_like(S)
+    S_k[:k] = S[:k]
+    A_k = np.dot(U, np.dot(np.diag(S_k), Vt))
+
+    compressed = {
+        'U': U[:, :k],
+        'S': S_k[:k],
+        'Vt': Vt[:k, :]
+    }
+    
+    # Debug: Check sizes
+    compressed_size = compressed['U'].nbytes + compressed['S'].nbytes + compressed['Vt'].nbytes
+    print(f"SVD Compressed Size: {compressed_size} bytes")
+    return A_k
+
+def dct_compression(img, threshold=10):
+    dct = cv2.dct(np.float32(img))
+    dct[dct < threshold] = 0  # Zero out small coefficients
+    idct = cv2.idct(dct)
+
+    # Debug: Check sizes
+    compressed_size = dct.nbytes + idct.nbytes
+    print(f"DCT Compressed Size: {compressed_size} bytes")
+    return idct
+
+def wavelet_compression(img, threshold=0.1):
+    coeffs = pywt.wavedec2(img, 'haar', level=2)
+    coeffs_thresholded = [coeffs[0]] + [tuple(pywt.threshold(c, threshold, mode='soft') for c in detail) for detail in coeffs[1:]]
+    
+    # Reconstruct the image from the thresholded coefficients
+    img_reconstructed = pywt.waverec2(coeffs_thresholded, 'haar')
+    
+    # Calculate the compressed size correctly
+    compressed_size = sum(c.nbytes for c in coeffs_thresholded[1]) + coeffs_thresholded[0].nbytes + img_reconstructed.nbytes
+    print(f"Wavelet Compressed Size: {compressed_size} bytes")
+    
+    return img_reconstructed
+
+def display_images(original, compressed, title1, title2):
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    plt.title(title1)
+    plt.imshow(original, cmap='gray')
+    plt.axis('off')
+
+    plt.subplot(1, 2, 2)
+    plt.title(title2)
+    plt.imshow(compressed, cmap='gray')
+    plt.axis('off')
+
+    plt.show()
+
+def main():
+    file_path = r'D:\SVD_project\amrita_campus.jpg'  # Use a raw string for Windows paths
+    original_image = load_image(file_path)
+
+    # Get original image size in KB
+    original_size = original_image.nbytes / 1024  # Convert bytes to KB
+
+    # Perform compression
+    svd_compressed = svd_compression(original_image)
+    dct_compressed = dct_compression(original_image)
+    wavelet_compressed = wavelet_compression(original_image)
+
+    # Calculate metrics
+    svd_mse, svd_psnr, svd_ssim = calculate_metrics(original_image, svd_compressed)
+    dct_mse, dct_psnr, dct_ssim = calculate_metrics(original_image, dct_compressed)
+    wavelet_mse, wavelet_psnr, wavelet_ssim = calculate_metrics(original_image, wavelet_compressed)
+
+    # Calculate Compressed Sizes and additional metrics
+    svd_compressed_size = svd_compressed.nbytes / 1024  # Size in KB
+    dct_compressed_size = dct_compressed.nbytes / 1024  # Size in KB
+    wavelet_compressed_size = wavelet_compressed.nbytes / 1024  # Size in KB
+
+    svd_cr = original_size / svd_compressed_size
+    dct_cr = original_size / dct_compressed_size
+    wavelet_cr = original_size / wavelet_compressed_size
+
+    # NCC calculation
+    def normalized_cross_correlation(original, compressed):
+        return np.sum(original * compressed) / (np.linalg.norm(original) * np.linalg.norm(compressed))
+
+    svd_ncc = normalized_cross_correlation(original_image, svd_compressed)
+    dct_ncc = normalized_cross_correlation(original_image, dct_compressed)
+    wavelet_ncc = normalized_cross_correlation(original_image, wavelet_compressed)
+
+    # Size Reduction
+    svd_size_reduction = original_size - svd_compressed_size
+    dct_size_reduction = original_size - dct_compressed_size
+    wavelet_size_reduction = original_size - wavelet_compressed_size
+
+    # Print Comparison Table
+    print(f"{'Method':<10} {'MSE':<20} {'PSNR (dB)':<15} {'SSIM':<15} {'CR':<10} {'NCC':<10} {'Compressed Size (KB)':<25} {'Size Reduction (KB)':<20}")
+    print(f"{'SVD':<10} {svd_mse:<20.4f} {svd_psnr:<15.4f} {svd_ssim:<15.4f} {svd_cr:<10.2f} {svd_ncc:<10.4f} {svd_compressed_size:<25.2f} {svd_size_reduction:<20.2f}")
+    print(f"{'DCT':<10} {dct_mse:<20.4f} {dct_psnr:<15.4f} {dct_ssim:<15.4f} {dct_cr:<10.2f} {dct_ncc:<10.4f} {dct_compressed_size:<25.2f} {dct_size_reduction:<20.2f}")
+    print(f"{'Wavelet':<10} {wavelet_mse:<20.4f} {wavelet_psnr:<15.4f} {wavelet_ssim:<15.4f} {wavelet_cr:<10.2f} {wavelet_ncc:<10.4f} {wavelet_compressed_size:<25.2f} {wavelet_size_reduction:<20.2f}")
+
+if __name__ == "__main__":
+    main()
+
+```
+
+```{.python}
+import numpy as np
+import cv2
+import pywt
+import matplotlib.pyplot as plt
+from skimage.metrics import structural_similarity as ssim
+
+def load_image(file_path):
+    img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)  # Load image in grayscale
+    return img
+
+def calculate_metrics(original, compressed):
+    mse = np.mean((original - compressed) ** 2)
+    psnr = 10 * np.log10(255**2 / mse) if mse != 0 else float('inf')
+    ssim_value = ssim(original, compressed, data_range=original.max() - original.min())
+    return mse, psnr, ssim_value
+
+def svd_compression(img, k=20):
+    A = img.astype(np.float32)
+    U, S, Vt = np.linalg.svd(A, full_matrices=False)
+    S_k = np.zeros_like(S)
+    S_k[:k] = S[:k]
+    A_k = np.dot(U[:, :k], np.dot(np.diag(S_k[:k]), Vt[:k, :]))
+
+    compressed = {
+        'U': U[:, :k],
+        'S': S_k[:k],
+        'Vt': Vt[:k, :]
+    }
+    
+    # Calculate the size of compressed data
+    compressed_size = compressed['U'].nbytes + compressed['S'].nbytes + compressed['Vt'].nbytes
+    print(f"SVD Compressed Size: {compressed_size} bytes")
+    return A_k, compressed_size
+
+def dct_compression(img, threshold=10):
+    dct = cv2.dct(np.float32(img))
+    dct[dct < threshold] = 0  # Zero out small coefficients
+    
+    # Count non-zero coefficients
+    non_zero_coeffs = np.count_nonzero(dct)
+    compressed_size = dct.nbytes - (dct.size - non_zero_coeffs) * dct.dtype.itemsize  # Size excluding zeros
+
+    idct = cv2.idct(dct)  # Reconstruct the image (not needed for size calculation)
+
+    print(f"DCT Compressed Size: {compressed_size} bytes")
+    return idct, compressed_size
+
+def wavelet_compression(image, wavelet='haar', threshold=0.2):
+    # Perform 2D wavelet decomposition
+    coeffs = pywt.wavedec2(image, wavelet)
+    
+    # Threshold the detail coefficients
+    coeffs_thresholded = list(coeffs)
+    for i in range(1, len(coeffs_thresholded)):
+        coeffs_thresholded[i] = tuple(pywt.threshold(c, threshold, mode='soft') for c in coeffs_thresholded[i])
+    
+    # Calculate compressed size
+    compressed_size = sum(np.prod(c.shape) * c.dtype.itemsize for detail in coeffs_thresholded[1:] for c in detail) + coeffs_thresholded[0].nbytes
+    
+    # Reconstruct the image
+    img_reconstructed = pywt.waverec2(coeffs_thresholded, wavelet)
+    
+    return img_reconstructed, compressed_size
+
+def display_images(original, compressed, title1, title2):
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    plt.title(title1)
+    plt.imshow(original, cmap='gray')
+    plt.axis('off')
+
+    plt.subplot(1, 2, 2)
+    plt.title(title2)
+    plt.imshow(compressed, cmap='gray')
+    plt.axis('off')
+
+    plt.show()
+
+def main():
+    file_path = r'D:\SVD_project\amrita_campus.jpg'  # Use a raw string for Windows paths
+    original_image = load_image(file_path)
+
+    # Get original image size in bytes
+    original_size = original_image.nbytes  # Size in bytes
+
+    # Perform compression
+    svd_compressed, svd_compressed_size = svd_compression(original_image)
+    dct_compressed, dct_compressed_size = dct_compression(original_image)
+    wavelet_compressed, wavelet_compressed_size = wavelet_compression(original_image)
+
+    # Calculate metrics
+    svd_mse, svd_psnr, svd_ssim = calculate_metrics(original_image, svd_compressed)
+    dct_mse, dct_psnr, dct_ssim = calculate_metrics(original_image, dct_compressed)
+    wavelet_mse, wavelet_psnr, wavelet_ssim = calculate_metrics(original_image, wavelet_compressed)
+    
+    # Calculate Compressed Sizes and additional metrics
+    svd_cr = original_size / svd_compressed_size
+    dct_cr = original_size / dct_compressed_size
+    wavelet_cr = original_size / wavelet_compressed_size
+
+    # NCC calculation
+    def normalized_cross_correlation(original, compressed):
+        return np.sum(original * compressed) / (np.linalg.norm(original) * np.linalg.norm(compressed))
+
+    svd_ncc = normalized_cross_correlation(original_image, svd_compressed)
+    dct_ncc = normalized_cross_correlation(original_image, dct_compressed)
+    wavelet_ncc = normalized_cross_correlation(original_image, wavelet_compressed)
+
+    # Size Reduction
+    svd_size_reduction = original_size - svd_compressed_size
+    dct_size_reduction = original_size - dct_compressed_size
+    wavelet_size_reduction = original_size - wavelet_compressed_size
+
+    # Print Comparison Table
+    print(f"{'Method':<10} {'MSE':<20} {'PSNR (dB)':<15} {'SSIM':<15} {'CR':<10} {'NCC':<10} {'Compressed Size (KB)':<25} {'Size Reduction (KB)':<20}")
+    print(f"{'SVD':<10} {svd_mse:<20.4f} {svd_psnr:<15.4f} {svd_ssim:<15.4f} {svd_cr:<10.2f} {svd_ncc:<10.4f} {svd_compressed_size/1024:<25.2f} {svd_size_reduction/1024:<20.2f}")
+    print(f"{'DCT':<10} {dct_mse:<20.4f} {dct_psnr:<15.4f} {dct_ssim:<15.4f} {dct_cr:<10.2f} {dct_ncc:<10.4f} {dct_compressed_size/1024:<25.2f} {dct_size_reduction/1024:<20.2f}")
+    print(f"{'Wavelet':<10} {wavelet_mse:<20.4f} {wavelet_psnr:<15.4f} {wavelet_ssim:<15.4f} {wavelet_cr:<10.2f} {wavelet_ncc:<10.4f} {wavelet_compressed_size/1024:<25.2f} {wavelet_size_reduction/1024:<20.2f}")
+    display_images(original_image, svd_compressed,"original","compressed")
+if __name__ == "__main__":
+    main()
+    
+```
+
+```{.python}
+import numpy as np
+from skimage import io, color
+import matplotlib.pyplot as plt
+
+# Load the image and convert it to grayscale
+image = io.imread('TestImage.jpg')
+if image.ndim == 3:
+    image = color.rgb2gray(image)
+image = image.astype(float)
+
+# Perform SVD
+U, S, Vt = np.linalg.svd(image, full_matrices=False)
+
+# Set number of components to visualize
+num_components = 2
+
+# Function to normalize and visualize singular vectors
+def visualize_singular_vectors(vectors, title, n_components, shape):
+    fig, axs = plt.subplots(1, n_components, figsize=(15, 5))
+    fig.suptitle(title, fontsize=16)
+    for i in range(n_components):
+        vector = vectors[:, i] if title == 'Column Space (U)' else vectors[i, :]
+        # Normalize vector for better visibility
+        normalized_vector = (vector - np.min(vector)) / (np.max(vector) - np.min(vector))
+        axs[i].imshow(normalized_vector.reshape(shape), cmap='gray', aspect='auto')
+        axs[i].axis('off')
+        axs[i].set_title(f'Component {i+1}')
+    plt.show()
+
+# Visualize Column Space (U matrix columns)
+visualize_singular_vectors(U, "Column Space (U)", num_components, (image.shape[0], 1))
+
+# Visualize Row Space (V^T matrix rows)
+visualize_singular_vectors(Vt, "Row Space (V^T)", num_components, (1, image.shape[1]))
+
+# Plot Singular Values
+plt.figure(figsize=(8, 6))
+plt.plot(np.log(1+S), 'o-', label="Singular Values")
+plt.xlabel("Index")
+plt.ylabel("Singular Value")
+plt.title("Singular Values Plot")
+plt.legend()
+plt.grid()
+plt.show()
+
+```
+
+### Ploting the signal and noise part of an image 
+
+
+```{.python}
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, color
+
+# Load the image and convert it to grayscale
+image = io.imread('TestImage.jpg')
+if image.ndim == 3:
+    image = color.rgb2gray(image)
+
+# Perform SVD
+U, S, VT = np.linalg.svd(image, full_matrices=False)
+
+# Number of components to keep
+k = 40  # Adjust this for more or fewer components
+
+# Reconstruct the signal part
+S_k = np.zeros_like(S)  # Create a zero array for singular values
+S_k[:k] = S[:k]  # Keep the largest k singular values
+
+# Reconstruct the signal image
+reconstructed_signal = U @ np.diag(S_k) @ VT
+
+# Extract noise
+noise = image - reconstructed_signal
+# Convert images to uint8 for saving
+image_uint8 = (image * 255).astype(np.uint8)
+reconstructed_signal_uint8 = (reconstructed_signal * 255).astype(np.uint8)
+noise_uint8 = (noise * 255).astype(np.uint8)
+
+# Save each image as a PDF
+io.imsave('original_image.pdf', image_uint8)
+io.imsave('reconstructed_signal_k_{}.pdf'.format(k), reconstructed_signal_uint8)
+io.imsave('extracted_noise.pdf', noise_uint8)
+# Plotting
+plt.figure(figsize=(15, 10))
+
+plt.subplot(1, 3, 1)
+plt.title('Original Image')
+plt.imshow(image, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title('Reconstructed Signal (k={})'.format(k))
+plt.imshow(reconstructed_signal, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title('Extracted Noise')
+plt.imshow(noise, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+# Save the entire figure as a PDF
+plt.savefig('comparison_plot.pdf', bbox_inches='tight')
+plt.show()
+```
+
+
+### Compression quality with different values of k
+
+```{.python}
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from skimage import io, color
+from skimage.metrics import peak_signal_noise_ratio as psnr
+from skimage.metrics import structural_similarity as ssim
+
+# Load the image and convert it to grayscale
+image = io.imread('TestImage.jpg')
+if image.ndim == 3:
+    image = color.rgb2gray(image)
+
+# Initialize a list to store results
+results = []
+
+# Define a range of k values
+k_values = [1, 5, 10, 20, 50, 100, 200, 400, 600, 800, 1000]
+
+for k in k_values:
+    # Perform SVD
+    U, S, VT = np.linalg.svd(image, full_matrices=False)
+
+    # Reconstruct the signal part with k components
+    S_k = np.zeros_like(S)
+    S_k[:k] = S[:k]
+    reconstructed_signal = U @ np.diag(S_k) @ VT
+
+    # Compute PSNR and SSIM
+    current_psnr = psnr(image, reconstructed_signal)
+    
+    # Set data_range for SSIM
+    data_range = 1  # Use 255 if your image is in the range [0, 255]
+    current_ssim = ssim(image, reconstructed_signal, data_range=data_range)
+
+    # Append results
+    results.append({'k': k, 'PSNR': current_psnr, 'SSIM': current_ssim})
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Display the DataFrame as a table
+print(results_df)
+
+# Optionally, save the results to a CSV file
+results_df.to_csv('psnr_ssim_variation.csv', index=False)
+
+# Plot the results
+plt.figure(figsize=(12, 6))
+plt.plot(results_df['k'], results_df['PSNR'], marker='o', label='PSNR')
+plt.plot(results_df['k'], results_df['SSIM'], marker='o', label='SSIM')
+plt.xscale('log')  # Log scale for better visualization
+plt.xlabel('Number of Components (k)')
+plt.ylabel('Value')
+plt.title('Variation of PSNR and SSIM with Different k Values')
+plt.legend()
+plt.grid()
+plt.savefig('psnr_ssim_variation_plot.pdf')
+plt.show()
+```
