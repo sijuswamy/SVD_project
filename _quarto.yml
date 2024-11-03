@@ -1,11 +1,6 @@
-manuscript:
-  notebooks:
-     - notebook: Notebooks/introduction
-       title: Introduction 
-    #- notebook: Notebooks/workbook1.qmd
-    #  title: SVD Applications
+project:
+  output-dir: docs
 
 formats:
   ieee-pdf: default
   ieee-html: default
-
