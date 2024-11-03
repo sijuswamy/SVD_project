@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Siju K S">
+<meta name="author" content="Dr.Soman K.P">
+<meta name="dcterms.date" content="2024-10-30">
+<meta name="keywords" content="Singular Value Decomposition (SVD), Image Processing, Image Compression, Image Denoising, Digital Watermarking, Noise Filtering, Matrix Factorization, Rank Approximation, Frobenius Norm, Energy Compaction, Digital Forensics, Signal Processing, Adaptive Image Processing, Orthogonal Subspaces">
+
+<title>SVD Based Image Processing Applications</title><style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<!-- This is what works with Quarto -->
+
+<script>
+
+  MathJax = {
+
+    loader: {load: ['[tex]/mhchem', '[tex]/physics']},
+
+    tex: {
+
+      tags: 'ams',  // should be 'ams', 'none', or 'all'
+
+      packages: {'[+]': ['mhchem','physics']}
+
+    }
+
+  };
+
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="citation_title" content="SVD Based Image Processing Applications">
+<meta name="citation_abstract" content="This study investigates the application of Singular Value Decomposition (SVD) as an effective mathematical framework for various image processing tasks. SVD offers a unique decomposition approach, making it suitable for applications like image compression, denoising, and watermarking by enabling optimal rank approximations and noise separation. The robustness of SVD in handling large matrices allows it to capture key image characteristics, preserving essential features while reducing data requirements. By leveraging SVD’s ability to separate data into dominant and subdominant subspaces, this research demonstrates enhanced image compression, effective noise reduction, and secure watermark embedding. Experimental results validate SVD&amp;amp;#039;s utility in optimizing image storage, clarity, and fidelity, with potential implications for advancing adaptive image processing techniques.
+">
+<meta name="citation_keywords" content="Singular Value Decomposition (SVD),Image Processing,Image Compression,Image Denoising,Digital Watermarking,Noise Filtering,Matrix Factorization,Rank Approximation,Frobenius Norm,Energy Compaction,Digital Forensics,Signal Processing,Adaptive Image Processing,Orthogonal Subspaces">
+<meta name="citation_author" content="Siju K S">
+<meta name="citation_author" content="Dr.Soman K.P">
+<meta name="citation_publication_date" content="2023-06-23">
+<meta name="citation_cover_date" content="2023-06-23">
+<meta name="citation_year" content="2023">
+<meta name="citation_online_date" content="2024-10-30">
+<meta name="citation_fulltext_html_url" content="https://github.com/dfolio/quarto-ieee">
+<meta name="citation_pdf_url" content="https://github.com/dfolio/quarto-ieee/template.pdf">
+<meta name="citation_language" content="en">
+<meta name="citation_firstpage" content="1">
+<meta name="citation_lastpage" content="27">
+<meta name="citation_journal_title" content="GitHUB">
+<meta name="citation_reference" content="citation_title=Singular value decompositions and digital image processing;,citation_author=Harry Andrews;,citation_author=C Patterson;,citation_publication_date=1976;,citation_cover_date=1976;,citation_year=1976;,citation_issue=1;,citation_volume=24;,citation_journal_title=IEEE Transactions on Acoustics, Speech, and Signal Processing;,citation_publisher=IEEE;">
+<meta name="citation_reference" content="citation_title=A singular value decomposition updating algorithm for subspace tracking;,citation_author=Marc Moonen;,citation_author=Paul Van Dooren;,citation_author=Joos Vandewalle;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;,citation_issue=4;,citation_volume=13;,citation_journal_title=SIAM Journal on Matrix Analysis and Applications;,citation_publisher=SIAM;">
+<meta name="citation_reference" content="citation_title=SVD-based methods for signal and image restoration;,citation_author=Julie L Kamm;,citation_publication_date=1998;,citation_cover_date=1998;,citation_year=1998;,citation_journal_title=PhD Thesis;,citation_publisher=Emory University United States;">
+<meta name="citation_reference" content="citation_title=Image compression using singular value decomposition;,citation_author=Samruddhi Kahu;,citation_author=Reena Rahate;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_issue=8;,citation_volume=2;,citation_journal_title=International Journal of Advancements in Research &amp;amp;amp; Technology;">
+<meta name="citation_reference" content="citation_title=Signal analysis using a multiresolution form of the singular value decomposition;,citation_author=Ramakrishna Kakarala;,citation_author=Philip O Ogunbona;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=5;,citation_volume=10;,citation_journal_title=IEEE Transactions on Image processing;,citation_publisher=IEEE;">
+<meta name="citation_reference" content="citation_title=Blind synthesis attack on SVD based watermarking techniques;,citation_author=Rowayda A Sadek;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_conference_title=2008 international conference on computational intelligence for modelling control &amp;amp;amp; automation;,citation_conference=IEEE;">
+<meta name="citation_reference" content="citation_title=An optimal watermarking scheme based on singular value decomposition;,citation_author=Emir Ganic;,citation_author=Nasir Zubair;,citation_author=Ahmet M Eskicioglu;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_volume=85;,citation_conference_title=Proceedings of the IASTED international conference on communication, network, and information security;,citation_conference=Citeseer;">
+<meta name="citation_reference" content="citation_title=Digital image watermarking using singular value decomposition;,citation_author=DV Satish Chandra;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;,citation_volume=3;,citation_conference_title=The 2002 45th midwest symposium on circuits and systems, 2002. MWSCAS-2002.;,citation_conference=IEEE;">
+<meta name="citation_reference" content="citation_title=SVD based image processing applications: state of the art, contributions and research challenges;,citation_author=Rowayda A Sadek;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_journal_title=arXiv preprint arXiv:1211.7102;">
+<meta name="citation_reference" content="citation_title=Introduction to linear algebra;,citation_author=Gilbert Strang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;">
+<meta name="citation_reference" content="citation_title=Mathematics for machine learning;,citation_author=Marc Peter Deisenroth;,citation_author=A Aldo Faisal;,citation_author=Cheng Soon Ong;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;">
+<meta name="citation_reference" content="citation_title=SVD Domain Watermarking;,citation_author=Nawin K Sharma;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://www.mathworks.com/matlabcentral/fileexchange/64554-svd-domain-watermarking;">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Document Sections</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#related-works" id="toc-related-works" class="nav-link" data-scroll-target="#related-works"><span class="header-section-number">2</span> Related works</a></li>
+  <li><a href="#introduction-to-singular-value-decomposition-svd" id="toc-introduction-to-singular-value-decomposition-svd" class="nav-link" data-scroll-target="#introduction-to-singular-value-decomposition-svd"><span class="header-section-number">3</span> Introduction to Singular Value Decomposition (SVD)</a></li>
+  <li><a href="#svd--a-new-tool-for-image-processing" id="toc-svd--a-new-tool-for-image-processing" class="nav-link" data-scroll-target="#svd--a-new-tool-for-image-processing"><span class="header-section-number">4</span> SVD- A New Tool for Image Processing</a>
+  <ul class="collapse">
+  <li><a href="#svd-subspaces-and-architecture" id="toc-svd-subspaces-and-architecture" class="nav-link" data-scroll-target="#svd-subspaces-and-architecture"><span class="header-section-number">4.1</span> SVD subspaces and architecture</a></li>
+  <li><a href="#pca-versus-svd" id="toc-pca-versus-svd" class="nav-link" data-scroll-target="#pca-versus-svd"><span class="header-section-number">4.2</span> PCA versus SVD</a></li>
+  <li><a href="#svd-multiresolution" id="toc-svd-multiresolution" class="nav-link" data-scroll-target="#svd-multiresolution"><span class="header-section-number">4.3</span> SVD Multiresolution</a></li>
+  <li><a href="#svd-oriented-energy" id="toc-svd-oriented-energy" class="nav-link" data-scroll-target="#svd-oriented-energy"><span class="header-section-number">4.4</span> SVD oriented energy</a></li>
+  </ul></li>
+  <li><a href="#optimal-approximation-and-noise-isolation-using-svd" id="toc-optimal-approximation-and-noise-isolation-using-svd" class="nav-link" data-scroll-target="#optimal-approximation-and-noise-isolation-using-svd"><span class="header-section-number">5</span> Optimal Approximation and Noise Isolation Using SVD</a></li>
+  <li><a href="#example-of-svd-application-image-reconstruction" id="toc-example-of-svd-application-image-reconstruction" class="nav-link" data-scroll-target="#example-of-svd-application-image-reconstruction"><span class="header-section-number">6</span> Example of SVD Application: Image Reconstruction</a></li>
+  <li><a href="#secrets-of-left-and-right-singular-matrices" id="toc-secrets-of-left-and-right-singular-matrices" class="nav-link" data-scroll-target="#secrets-of-left-and-right-singular-matrices"><span class="header-section-number">7</span> Secrets of left and right singular matrices</a>
+  <ul class="collapse">
+  <li><a href="#image-quality-metrics" id="toc-image-quality-metrics" class="nav-link" data-scroll-target="#image-quality-metrics"><span class="header-section-number">7.1</span> Image quality metrics</a></li>
+  <li><a href="#orthogonal-subspaces-in-svd" id="toc-orthogonal-subspaces-in-svd" class="nav-link" data-scroll-target="#orthogonal-subspaces-in-svd"><span class="header-section-number">7.2</span> Orthogonal subspaces in SVD</a></li>
+  </ul></li>
+  <li><a href="#new-role--svd-as-a-denoiser" id="toc-new-role--svd-as-a-denoiser" class="nav-link" data-scroll-target="#new-role--svd-as-a-denoiser"><span class="header-section-number">8</span> New Role- SVD as a Denoiser</a>
+  <ul class="collapse">
+  <li><a href="#comparison-and-advantages-of-svd-based-denoising-in-medical-imaging" id="toc-comparison-and-advantages-of-svd-based-denoising-in-medical-imaging" class="nav-link" data-scroll-target="#comparison-and-advantages-of-svd-based-denoising-in-medical-imaging"><span class="header-section-number">8.1</span> Comparison and Advantages of SVD-Based Denoising in Medical Imaging</a></li>
+  </ul></li>
+  <li><a href="#image-forensics-with-svd" id="toc-image-forensics-with-svd" class="nav-link" data-scroll-target="#image-forensics-with-svd"><span class="header-section-number">9</span> Image Forensics with SVD</a>
+  <ul class="collapse">
+  <li><a href="#image-watermarking-with-scaled-additive-approach" id="toc-image-watermarking-with-scaled-additive-approach" class="nav-link" data-scroll-target="#image-watermarking-with-scaled-additive-approach"><span class="header-section-number">9.1</span> Image watermarking with scaled additive approach</a></li>
+  <li><a href="#image-watermarking-with-adaptive-scaled-additive-approach" id="toc-image-watermarking-with-adaptive-scaled-additive-approach" class="nav-link" data-scroll-target="#image-watermarking-with-adaptive-scaled-additive-approach"><span class="header-section-number">9.2</span> Image watermarking with adaptive scaled additive approach</a></li>
+  <li><a href="#perceptual-forensic-approach-for-image-watermarking" id="toc-perceptual-forensic-approach-for-image-watermarking" class="nav-link" data-scroll-target="#perceptual-forensic-approach-for-image-watermarking"><span class="header-section-number">9.3</span> Perceptual Forensic Approach for Image Watermarking</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">10</span> Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">11</span> References</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full" itemprop="headline">
+<div class="col-12 page-columns page-full">
+<div class="quarto-header page-columns page-full">
+
+  <div class="quarto-title column-body">
+  <div class="container col">
+    <h1 class="title" itemprop="headline">SVD Based Image Processing Applications</h1>
+    
+    <div class="container">
+    <div class="mb-3 mt-2 d-grid gap-3 d-md-flex">
+      
+      <a href="#citation" class="btn btn-outline-primary" role="button">Cite This</a>
+      <a href="https://github.com/dfolio/quarto-ieee/blob/main/template.pdf" class="btn btn-danger text-white" role="button"><i class="bi bi-file-pdf" rel="img" aria-label="PDF"></i>PDF</a>
+    </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="quarto-subheader">
+  <div class="quarto-author-banner p-0">
+  <div class="d-flex align-items-center flex-nowrap">
+        <div class="quarto-author overflow-hidden">
+    <div class="d-flex flex-nowrap">
+      <div class="quarto-author-contents align-items-center text-truncate pe-0">
+                <span class="author-info"><a href="https://dfolio.fr/" title="Amrita Vishwa Vidyapeetham, School of Artificial Intelligence, CEN, ">Siju K S</a><a href="https://orcid.org/0009-0004-1983-5574" class="quarto-title-author-orcid px-1" target="orcid.widget" rel="me noopener noreferrer"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width: 1em; margin-inline-start: 0.5em" alt="ORCID iD icon"></a></span> and&nbsp;<span class="author-info">Dr.Soman K.P</span>
+              </div>
+    </div>
+    </div>
+    
+    <div class="d-none d-md-flex align-items-center">
+    <div class="author-all d-none d-md-block">
+      <a href="#authors" class="">All Authors</a>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+</div>
+</div>
+<hr class="px-3 mt-2">
+</header>
+<div class="quarto-main-body container p-0">
+<section class="quarto-abstract d-flex">
+<div class="container">
+<div class="quarto-abstract-block d-flex row g-0">
+<div class="col-12">
+  <div class="abstract mb-3">
+    <strong class="abstract-title">Abstract:</strong>
+    <p>This study investigates the application of Singular Value Decomposition (SVD) as an effective mathematical framework for various image processing tasks. SVD offers a unique decomposition approach, making it suitable for applications like image compression, denoising, and watermarking by enabling optimal rank approximations and noise separation. The robustness of SVD in handling large matrices allows it to capture key image characteristics, preserving essential features while reducing data requirements. By leveraging SVD’s ability to separate data into dominant and subdominant subspaces, this research demonstrates enhanced image compression, effective noise reduction, and secure watermark embedding. Experimental results validate SVD’s utility in optimizing image storage, clarity, and fidelity, with potential implications for advancing adaptive image processing techniques.</p>
+  </div>
+</div>
+</div>
+
+<div class="citation-meta published-in pb-3">
+<strong class="citation-title">Published in:</strong> GitHUB
+(
+
+2024-10-30)
+
+</div>
+
+<div class="container g-0 pt-3">
+<div class="grid">
+  <div class="g-col-6">
+        <div class="citation-meta pb-3"><strong class="citation-title">Page(s):</strong> 1-27</div>
+            <div class="citation-meta pb-3"><strong class="citation-title">Date of Publication:</strong> 30 October 2024</div>  </div>
+  <div class="g-col-6">
+    
+    
+  </div>
+
+    <div class="g-col-12 pb-3">
+    <div class="funding">
+      <a class="btn p-0" data-bs-toggle="collapse" href="#collapseFA" role="button" aria-expanded="false" aria-controls="collapseFA"><div class="expand_caret caret"><i class="bi bi-caret-right-fill"></i></div><strong>Funding Agency</strong></a>
+      <div class="collapse" id="collapseFA">
+        <div class="funding-info">
+        No funding is recieved for completion of this project work
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+</div>
+</section>
+
+
+<div class="quarto-body-content">
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>Linear Algebra based SVD is a powerful method to be used within the realm of digital image processing. SVD decomposes a matrix in to three constitutive matrices U, S, and V, thus making it possible to represent an image using a fewer number of values <span class="citation" data-cites="moonen1992singular"><a href="#ref-moonen1992singular" role="doc-biblioref">[1]</a></span>. This characteristic has practical usage such as for image compression by keeping few singular values in <span class="math inline">\(S\)</span> matrix and stores the characteristics feature of the image, hence reduce storage.</p>
+<p>Researches suggested that It can be done if appropriate number of singular values maintained and image can be compressed at higher ratio with good quality The number of singular values kept (and thus the size of the image to be compressed) is always not more (and often far less) than the number of pixels in the original image. Thus, SVD turns out to be a relatively strong technique for applications where a minimum number of storage space and bandwidth is required to be preserved during transmission of signals such as in satellite imagery, medical imaging and photo enhancement.</p>
+<p>Singular Value Decomposition (SVD) is a powerful mathematical technique with a diverse range of applications in image processing. While its capabilities are well-established, there remains untapped potential in fully harnessing its versatility. This paper delves into the rich properties of SVD and demonstrates how they can be leveraged across various image processing tasks, such as compression, watermarking, and quality assessment.</p>
+<p>The study presents several key findings. First, the experiments validate known but underutilized characteristics of Singular Value Decomposition (SVD) in the context of image processing. This serves to aid ongoing efforts aimed at enhancing the application of these SVD characteristics. Second, the research identifies new trends and challenges faced in the application of SVD for image processing. Some of these trends are corroborated by experimental data, while others require additional verification. Finally, this work lays the groundwork for future investigations, highlighting promising avenues for further exploration and development.</p>
+<p>Overall, this work offers a comprehensive examination of the rich properties of Singular Value Decomposition (SVD) and its multifaceted applications in the field of image processing. By shedding light on both the established and emerging aspects of SVD, the study paves the way for more efficient and innovative applications of this powerful mathematical technique.</p>
+</section>
+<section id="related-works" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="related-works"><span class="header-section-number">2</span> Related works</h2>
+<p>Andrews and Patterson (1976) explored the significant role of Singular Value Decomposition (SVD) techniques in the realm of digital image processing, particularly for applications that demand high computational power and precise imaging capabilities. Their work highlighted the versatility of SVD methods, which are applicable not only to images but also to broader representations of point spread functions (PSF) and impulse responses. The authors framed these techniques as natural extensions of linear filtering theory, thereby situating SVD within established methodologies for image enhancement and restoration <span class="citation" data-cites="andrews1976singular"><a href="#ref-andrews1976singular" role="doc-biblioref">[2]</a></span>.</p>
+<p>Moonen et al.&nbsp;(1992) expanded upon the established QR updating scheme by introducing a more versatile and generally applicable method for updating the Singular Value Decomposition (SVD). Their approach enhances the QR updating technique by integrating a Jacobi-type SVD procedure. This innovative combination allows for the effective restoration of an acceptable approximation of the SVD after only a few SVD steps following each QR update. The authors demonstrated that this method not only maintains a comparable computational cost to that of traditional QR updating but also significantly reduces the overall computational burden associated with SVD updates. <span class="citation" data-cites="moonen1992singular"><a href="#ref-moonen1992singular" role="doc-biblioref">[1]</a></span>.</p>
+<p>In their paper, Kakarala and Ogunbona (2001) introduced a novel multiresolution form of Singular Value Decomposition (SVD) designed for enhanced signal analysis and approximation. Recognizing the inherent strengths of traditional SVD—specifically its optimal decorrelation and subrank approximation properties—the authors expanded upon these foundations by developing a multiresolution approach that maintains linear computational complexity <span class="citation" data-cites="kakarala2001signal"><a href="#ref-kakarala2001signal" role="doc-biblioref">[3]</a></span>.</p>
+<p>D Chandra (2002) introduced a novel watermarking technique- scaled additive approach- for digital images that employs Singular Value Decomposition (SVD) as a foundational method. The paper provides comprehensive simulation results that showcase the robustness of this SVD-based watermarking approach against various common image degradations, underscoring its effectiveness in preserving watermark integrity in challenging conditions <span class="citation" data-cites="chandra2002digital"><a href="#ref-chandra2002digital" role="doc-biblioref">[4]</a></span>.</p>
+<p>Sadek (2008) explored the increasing prominence of Singular Value Decomposition (SVD) as a robust and reliable technique for orthogonal matrix decomposition in the field of signal processing, particularly in the context of watermarking and data hiding. The author highlighted the fundamental properties of SVD, such as its conceptual clarity and stability, which contribute to its growing popularity in various applications In the realm of watermarking, many researchers have focused on leveraging the singular values of host images to embed hidden information. However, Sadek introduced a critical examination of these SVD-based watermarking techniques by presenting a counterfeiting attack specifically targeting the embedded watermark information within the singular values. The study underscored the inherent vulnerabilities of this class of watermarking methods, revealing how singular values can be easily compromised through a broad spectrum of image processing operations and deliberate attacks <span class="citation" data-cites="sadek2008blind"><a href="#ref-sadek2008blind" role="doc-biblioref">[5]</a></span>.</p>
+<p>Sadek (2012) explores the potential of Singular Value Decomposition (SVD) as a transformative tool in the realm of image processing. The paper presents a comprehensive experimental survey highlighting SVD’s efficacy across various imaging applications and proposed the perceptual forensic approach in image watermarking. Recognizing SVD as an attractive algebraic transform, Sadek emphasizes that its application in image processing is still in its early stages despite its well-documented advantageous properties <span class="citation" data-cites="sadek2012svd"><a href="#ref-sadek2012svd" role="doc-biblioref">[6]</a></span>.</p>
+<p>In their study, Kahu and Rahate (2013) investigated the application of Singular Value Decomposition (SVD) as a technique for image compression, emphasizing its effectiveness in expressing image data through a limited number of eigenvectors determined by the image’s dimensionality. They highlighted the significance of psycho-visual redundancies inherent in images, which enable compression without compromising the quality of the visual output <span class="citation" data-cites="kahu2013image"><a href="#ref-kahu2013image" role="doc-biblioref">[7]</a></span>.</p>
+</section>
+<section id="introduction-to-singular-value-decomposition-svd" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="introduction-to-singular-value-decomposition-svd"><span class="header-section-number">3</span> Introduction to Singular Value Decomposition (SVD)</h2>
+<p>In linear algebra, Singular Value Decomposition (SVD) is a fundamental factorization technique for rectangular real or complex matrices. It provides a structure similar to the diagonalization of symmetric or Hermitian square matrices, utilizing eigenvectors as a basis. SVD is particularly advantageous due to its stability and effectiveness, allowing for decomposition into a set of linearly independent components, each contributing uniquely to the matrix’s structure.</p>
+<p>For a digital image <span class="math inline">\(X\)</span> of size <span class="math inline">\(M \times N\)</span> (where <span class="math inline">\(M \geq N\)</span>), the SVD of <span class="math inline">\(X\)</span> is represented as:</p>
+<p><span class="math display">\[
+X = U \Sigma V^T
+\]</span></p>
+<p>where <span class="math inline">\(U\)</span> is an <span class="math inline">\(M \times M\)</span> orthogonal matrix, <span class="math inline">\(V\)</span> is an <span class="math inline">\(N \times N\)</span> orthogonal matrix, and <span class="math inline">\(\Sigma\)</span> is an <span class="math inline">\(M \times N\)</span> diagonal matrix. The matrices <span class="math inline">\(U = [u_1, u_2, \ldots, u_m]\)</span> and <span class="math inline">\(V = [v_1, v_2, \ldots, v_n]\)</span> contain the left and right singular vectors of <span class="math inline">\(X\)</span>, respectively, and <span class="math inline">\(\Sigma\)</span> holds the singular values <span class="math inline">\(\sigma_i\)</span> of <span class="math inline">\(X\)</span> along its diagonal in descending order of magnitude, with all off-diagonal elements set to zero.</p>
+<p>In this setup, <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> are unitary orthogonal matrices, meaning that each column vector has a unit norm and is orthogonal to others. The singular values <span class="math inline">\(\sigma_i\)</span> in <span class="math inline">\(\Sigma\)</span> indicate the energy contribution of each corresponding component, while each pair of singular vectors from <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> defines the spatial orientation or geometry of these components.</p>
+<p>The left singular vectors (LSCs) of <span class="math inline">\(X\)</span> are the eigenvectors of the matrix <span class="math inline">\(X X^T\)</span>, while the right singular vectors (RSCs) are eigenvectors of <span class="math inline">\(X^T X\)</span>. Each singular value represents the 2-norm of its associated component, with the largest singular values capturing the most significant patterns or features in the data. This property allows SVD to effectively highlight essential image components while suppressing noise or less critical features, making it ideal for applications focused on key structural features in image processing <span class="citation" data-cites="andrews1976singular"><a href="#ref-andrews1976singular" role="doc-biblioref">[2]</a></span>.</p>
+</section>
+<section id="svd--a-new-tool-for-image-processing" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="svd--a-new-tool-for-image-processing"><span class="header-section-number">4</span> SVD- A New Tool for Image Processing</h2>
+<p>Singular Value Decomposition (SVD) is a powerful and robust method for orthogonal matrix decomposition, widely valued for its stability and conceptual clarity. These attributes have led to its growing popularity in signal processing, particularly in the domain of image processing. As an algebraic transformation, SVD brings several advantageous properties to imaging, which this section examines. While some of these properties are well-utilized, others present opportunities for further exploration and application.</p>
+<p>Several key properties of SVD make it particularly useful in image processing. These include maximum energy packing, efficient solutions to least squares problems, calculation of matrix pseudo-inverses, and multivariate analysis <span class="citation" data-cites="strang2022introduction"><a href="#ref-strang2022introduction" role="doc-biblioref">[8]</a></span>. An essential feature of SVD is its relationship to matrix rank and its ability to approximate matrices at a given rank. Digital images, often represented as low-rank matrices, can be effectively described by a limited number of eigenimages. This approach allows image signals to be manipulated in two distinct subspaces <span class="citation" data-cites="kamm1998svd"><a href="#ref-kamm1998svd" role="doc-biblioref">[9]</a></span>.</p>
+<p>In the sections that follow, key hypotheses related to these properties are proposed and validated. For completeness, the theoretical SVD theorems relevant to these applications are summarized, followed by a practical review of SVD properties with experimental demonstrations.</p>
+<section id="svd-subspaces-and-architecture" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="svd-subspaces-and-architecture"><span class="header-section-number">4.1</span> SVD subspaces and architecture</h3>
+<p>The SVD method effectively divides a matrix into two orthogonal subspaces: the dominant and subdominant subspaces. This division corresponds to a partitioning of the <span class="math inline">\(M\)</span>-dimensional vector space, separating primary signal components from secondary ones <span class="citation" data-cites="andrews1976singular"><a href="#ref-kamm1998svd" role="doc-biblioref">[9]</a></span>. Such a property is particularly advantageous in applications like noise filtering and digital watermarking, where isolating signal elements from noise or embedding data is crucial <span class="citation" data-cites="chandra2002digital"><a href="#ref-sadek2012svd" role="doc-biblioref">[6]</a></span>.</p>
+<p>In the context of image processing, SVD architecture further highlights its utility. For an image decomposed via SVD, each singular value (SV) represents the luminance level of a specific image layer, while the associated singular vectors (SCs) provide the geometric structure of that layer. Generally, prominent image features align with eigenimages associated with larger singular values, while smaller singular values correspond to components associated with noise <span class="citation" data-cites="kahu2013image"><a href="#ref-kahu2013image" role="doc-biblioref">[7]</a></span>.</p>
+</section>
+<section id="pca-versus-svd" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="pca-versus-svd"><span class="header-section-number">4.2</span> PCA versus SVD</h3>
+<p>Principal Component Analysis (PCA), also known as the Karhunen-Loève Transform (KLT) or the Hotelling Transform, is a technique for computing dominant vectors that represent a given dataset. PCA achieves an optimal basis for minimum mean squared reconstruction of data and is computationally based on the SVD of the data matrix or the eigenvalue decomposition of the data covariance matrix. SVD is closely related to the eigenvalue-eigenvector decomposition of a square matrix <span class="math inline">\(X\)</span> into <span class="math inline">\(V\Lambda V^T\)</span>, where <span class="math inline">\(V\)</span> is orthogonal, and <span class="math inline">\(\Lambda\)</span> is diagonal. Notably, the matrices <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> in SVD correspond to eigenvectors of <span class="math inline">\(XX^T\)</span> and <span class="math inline">\(X^TX\)</span>, respectively. If <span class="math inline">\(X\)</span> is symmetric, the singular values of <span class="math inline">\(X\)</span> are the absolute values of its eigenvalues <span class="citation" data-cites="strang2022introduction"><a href="#ref-deisenroth2020mathematics" role="doc-biblioref">[10]</a></span>.</p>
+</section>
+<section id="svd-multiresolution" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="svd-multiresolution"><span class="header-section-number">4.3</span> SVD Multiresolution</h3>
+<p>SVD is known for its maximum energy packing capability, making it particularly useful for applications requiring multiresolution analysis. This approach enables statistical characterization of images across multiple resolutions, with SVD decomposing a matrix into orthogonal components that allow optimal sub-rank approximations. The multiresolution properties of SVD provide a framework to measure several critical image characteristics at various resolutions, including isotropy, sparsity of principal components, self-similarity under scaling, and decomposition of mean squared error into meaningful components <span class="citation" data-cites="kakarala2001signal"><a href="#ref-kakarala2001signal" role="doc-biblioref">[3]</a></span>.</p>
+</section>
+<section id="svd-oriented-energy" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="svd-oriented-energy"><span class="header-section-number">4.4</span> SVD oriented energy</h3>
+<p>In SVD-based analysis of oriented energy, both the rank of the problem and the signal space orientation are identifiable. SVD allows decomposition into linearly independent components, each with its own energy contribution. Represented as a linear combination of principal components, SVD highlights dominant components that define the rank of the observed system, with a few key components effectively capturing the system’s structure. The concept of oriented energy is beneficial for separating signals from different sources or selecting signal subspaces with maximal activity and integrity. Singular values in SVD represent the square root of energy in the corresponding principal direction, with the primary direction often aligned with the first singular vector <span class="math inline">\(V_1\)</span>. Dominance accuracy can be measured by evaluating the difference, or normalized difference, between the first two singular values <span class="citation" data-cites="kakarala2001signal"><a href="#ref-sadek2008blind" role="doc-biblioref">[5]</a></span>.</p>
+<p>Many properties of SVD remain underutilized in image processing applications. Subsequent sections will experimentally explore these unexploited properties to demonstrate their potential for enhancing various image processing techniques. Additional research is essential to fully harness this versatile transformation in new and evolving applications.</p>
+</section>
+</section>
+<section id="optimal-approximation-and-noise-isolation-using-svd" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="optimal-approximation-and-noise-isolation-using-svd"><span class="header-section-number">5</span> Optimal Approximation and Noise Isolation Using SVD</h2>
+<p>The SVD’s unique ability to distinguish image content from noise is critical for efficient matrix approximation. In an SVD-decomposed matrix, the highest singular values capture the most essential components of the image, while lower singular values represent noise. By reconstructing the matrix with only the top <span class="math inline">\(k\)</span> singular values—forming an approximation <span class="math inline">\(X_k = U_k \Sigma_k V_k^T\)</span>—SVD yields an optimal representation that preserves primary image features while suppressing noise. This characteristic makes SVD ideal for noise filtering, compression, and forensic applications, where detectable noise patterns are useful in watermarking and signal integrity assessment. ### Rank approximation using SVD}</p>
+<p>Singular Value Decomposition (SVD) facilitates low-rank approximation, enabling optimal sub-rank representations by emphasizing the largest singular values that encapsulate the majority of the energy within an image. SVD illustrates that a matrix can be expressed as a sum of rank-one matrices. Given a matrix <span class="math inline">\(X \in \mathbb{R}^{m \times n}\)</span> with <span class="math inline">\(p = \min(m,n)\)</span>, the approximation can be represented as a truncated matrix <span class="math inline">\(X_k\)</span> with a specified rank <span class="math inline">\(k\)</span>. The representation is formulated as follows:</p>
+<p><span class="math display">\[
+X \approx X_k = \sum_{i=1}^{k} s_i u_i v_i^T,
+\]</span></p>
+<p>where <span class="math inline">\(s_i\)</span> are the singular values, <span class="math inline">\(u_i\)</span> are the left singular vectors, and <span class="math inline">\(v_i\)</span> are the right singular vectors. Each term <span class="math inline">\(s_i u_i v_i^T\)</span> corresponds to a rank-one matrix, leading to the conclusion that <span class="math inline">\(X\)</span> is the sum of <span class="math inline">\(k\)</span> rank-one matrices. This approximation captures as much of the <em>energy</em> of <span class="math inline">\(X\)</span> as possible while maintaining a rank of at most <span class="math inline">\(k\)</span>. Here, <em>energy</em> is quantified using the 2-norm or Frobenius norm.</p>
+<p>The outer product <span class="math inline">\(u_i v_i^T\)</span> results in a matrix of rank 1, requiring <span class="math inline">\(M + N\)</span> storage compared to <span class="math inline">\(M \times N\)</span> for the original matrix. For truncated SVD transformations with rank <span class="math inline">\(k\)</span>, the required storage space is reduced to <span class="math inline">\((m+n+1)k\)</span>, demonstrating the efficiency of SVD in applications such as image compression and watermarking.</p>
+</section>
+<section id="example-of-svd-application-image-reconstruction" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="example-of-svd-application-image-reconstruction"><span class="header-section-number">6</span> Example of SVD Application: Image Reconstruction</h2>
+<p>In this section, we demonstrate the application of Singular Value Decomposition (SVD) on a JPEG image obtained from the internet. The image is subjected to low-rank approximation using SVD to explore its effectiveness in image reconstruction and compression.</p>
+<p>For this experiment, we set the rank <span class="math inline">\(k = 40\)</span>. The original image, denoted as <span class="math inline">\(X\)</span>, is decomposed into its singular values and singular vectors as follows:</p>
+<p><span class="math display">\[
+X = U S V^T,
+\]</span></p>
+<p>where <span class="math inline">\(U\)</span> is an orthogonal matrix containing the left singular vectors, <span class="math inline">\(S\)</span> is a diagonal matrix of singular values, and <span class="math inline">\(V^T\)</span> contains the right singular vectors. By retaining only the top <span class="math inline">\(k\)</span> singular values and their corresponding singular vectors, we can reconstruct a low-rank approximation of the image:</p>
+<p><span class="math display">\[
+X_k \approx \sum_{i=1}^{k} s_i u_i v_i^T.
+\]</span></p>
+<p>In this instance, the low-rank approximation captures a significant portion of the image’s energy, effectively preserving the essential visual features while reducing the noise and detail represented by the higher-order singular values.</p>
+<p>The reconstructed image using <span class="math inline">\(k = 40\)</span> is displayed in <a href="#fig-svdreconstruction" class="quarto-xref">Fig.&nbsp;1</a>. This result illustrates the ability of SVD to maintain the overall structure and key characteristics of the original image while achieving a notable reduction in data size. The efficiency of this low-rank approximation highlights the potential of SVD for applications in image compression and restoration, allowing for storage savings without substantial loss of quality.</p>
+<p>This example underscores the practical utility of SVD in image processing, offering a powerful tool for manipulating image data in various applications, including compression, denoising, and feature extraction.</p>
+<div id="fig-svdreconstruction" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svdreconstruction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/SVD1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svdreconstruction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;1: Reconstructed image using SVD with low-rank approximation (k=40).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="secrets-of-left-and-right-singular-matrices" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="secrets-of-left-and-right-singular-matrices"><span class="header-section-number">7</span> Secrets of left and right singular matrices</h2>
+<p>The matrices <span class="math inline">\(U\)</span> and <span class="math inline">\(V^T\)</span> provide crucial insights into the structural characteristics of the image, specifically the column space and row space representations.</p>
+<p>The left singular matrix <span class="math inline">\(U\)</span> captures the column space of the image, which represents the various features and patterns present in the image across its vertical axis. In contrast, the right singular matrix <span class="math inline">\(V^T\)</span> captures the row space of the image, representing patterns across the horizontal axis. By visualizing the first two components of these matrices, we can reconstruct the primary patterns within the image (refer <a href="#fig-SVD_components" class="quarto-xref">Fig.&nbsp;2</a>).</p>
+<p>The first two components of the column space from matrix <span class="math inline">\(U\)</span> highlight the dominant vertical patterns, while the first two components of the row space from matrix <span class="math inline">\(V^T\)</span> reveal the dominant horizontal patterns. This reconstruction allows for a clear interpretation of how the image is constructed from these fundamental features, showcasing the spatial relationships inherent in the image data.</p>
+<p>It is important to note that the components of <span class="math inline">\(V\)</span> associated with the smallest singular values correspond to noise in the image. This noise resides in the null space of the image matrix <span class="math inline">\(X\)</span> and contributes minimally to the overall structure of the image. By identifying these components, we can effectively distinguish between the essential features of the image and the extraneous noise that may obscure its true representation.</p>
+<div id="fig-SVD_components" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-SVD_components-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/SVDcomponents.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SVD_components-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;2: Visualization of the components obtained from the SVD of the image.
+</figcaption>
+</figure>
+</div>
+<p>Figure [<a href="#fig-singular_value_distribution" class="quarto-xref">Fig.&nbsp;3</a>} displays the log-mod distribution of the singular values from the SVD of the image, providing insight into the energy contributions of each component.</p>
+<div id="fig-singular_value_distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-singular_value_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/singular-value-distribution.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-singular_value_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;3: Distribution of the singular values of the image.
+</figcaption>
+</figure>
+</div>
+<p>The log-mod distribution of the singular values reveals crucial information about the image’s structure and the underlying data’s dimensionality. The singular values, arranged in descending order, represent the amount of energy each corresponding eigenimage contributes to the overall image representation.</p>
+<p>From <a href="#fig-singular_value_distribution" class="quarto-xref">Fig.&nbsp;3</a>, a rapid decay in singular values indicates that a small number of components capture the majority of the image’s energy, signifying a low-rank structure. This property is advantageous for compression, as it suggests that the image can be approximated using fewer outer products of rank-one matrices, thus minimizing information loss.</p>
+<p>The slope of the log-mod distribution further elucidates the significance of each singular value; a steep drop-off signifies that most information is concentrated in the first few singular values, while the tail end, characterized by smaller singular values, is associated with noise and less informative features of the image. This insight allows for strategic selection of singular values in applications such as compression and denoising, where retaining the dominant components while discarding those associated with lower energy can enhance the overall quality of the reconstructed image.</p>
+<section id="image-quality-metrics" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="image-quality-metrics"><span class="header-section-number">7.1</span> Image quality metrics</h3>
+<p>In the context of image compression and reconstruction using Singular Value Decomposition (SVD), it is essential to evaluate the quality of the reconstructed image. Three popular metrics for assessing image quality are the Mean Squared Error (MSE), Peak Signal-to-Noise Ratio (PSNR), and Structural Similarity Index Measure (SSIM). Each of these metrics provides a different perspective on the quality of the reconstructed image compared to the original.</p>
+<section id="mean-squared-error-mse" class="level4" data-number="7.1.1">
+<h4 data-number="7.1.1" class="anchored" data-anchor-id="mean-squared-error-mse"><span class="header-section-number">7.1.1</span> Mean Squared Error (MSE)</h4>
+<p>The Mean Squared Error is a measure of the average squared differences between the original and reconstructed images. It is defined mathematically as:</p>
+<p><span class="math display">\[
+\text{MSE} = \frac{1}{N} \sum_{i=1}^{N} (I(i) - \hat{I}(i))^2
+\]</span></p>
+<p>where <span class="math inline">\(I(i)\)</span> is the pixel value of the original image, <span class="math inline">\(\hat{I}(i)\)</span> is the pixel value of the reconstructed image, and <span class="math inline">\(N\)</span> is the total number of pixels in the image. Lower MSE values indicate better image quality.</p>
+</section>
+<section id="peak-signal-to-noise-ratio-psnr" class="level4" data-number="7.1.2">
+<h4 data-number="7.1.2" class="anchored" data-anchor-id="peak-signal-to-noise-ratio-psnr"><span class="header-section-number">7.1.2</span> Peak Signal-to-Noise Ratio (PSNR)</h4>
+<p>The Peak Signal-to-Noise Ratio is a logarithmic measure that compares the maximum possible power of a signal to the power of corrupting noise that affects the fidelity of its representation. It is given by:</p>
+<p><span class="math display">\[
+\text{PSNR} = 10 \cdot \log_{10} \left( \frac{\text{MAX}^2}{\text{MSE}} \right)
+\]</span> where <span class="math inline">\(\text{MAX}\)</span> represents the maximum pixel value (e.g., 255 for 8-bit images). Higher PSNR values indicate better image quality, as they correspond to lower MSE values. Higher PSNR values generally indicate better quality of the reconstructed image.</p>
+</section>
+<section id="structural-similarity-index-measure-ssim" class="level4" data-number="7.1.3">
+<h4 data-number="7.1.3" class="anchored" data-anchor-id="structural-similarity-index-measure-ssim"><span class="header-section-number">7.1.3</span> Structural Similarity Index Measure (SSIM)</h4>
+<p>The Structural Similarity Index Measure assesses the visual impact of three characteristics: luminance, contrast, and structure. The SSIM index is defined as:</p>
+<p><span class="math display">\[
+\text{SSIM}(I, \hat{I}) = \frac{(2\mu_I \mu_{\hat{I}} + C_1)(2\sigma_{I\hat{I}} + C_2)}{(\mu_I^2 + \mu_{\hat{I}}^2 + C_1)(\sigma_I^2 + \sigma_{\hat{I}}^2 + C_2)}
+\]</span></p>
+<p>where <span class="math inline">\(\mu_I\)</span> and <span class="math inline">\(\mu_{\hat{I}}\)</span> are the average pixel values of the original and reconstructed images, <span class="math inline">\(\sigma_I^2\)</span> and <span class="math inline">\(\sigma_{\hat{I}}^2\)</span> are the variances, and <span class="math inline">\(\sigma_{I\hat{I}}\)</span> is the covariance. The constants <span class="math inline">\(C_1\)</span> and <span class="math inline">\(C_2\)</span> are small values added for stability. SSIM values range from -1 to 1, with values closer to 1 indicating better similarity.</p>
+<p>These metrics can effectively evaluate the quality of images reconstructed through SVD compression, providing insights into how well the compression process preserves the original image details.</p>
+</section>
+<section id="comparison-of-image-compression-methods" class="level4" data-number="7.1.4">
+<h4 data-number="7.1.4" class="anchored" data-anchor-id="comparison-of-image-compression-methods"><span class="header-section-number">7.1.4</span> Comparison of image compression methods</h4>
+<p>In this section, we compare the performance of different image compression methods, specifically focusing on Singular Value Decomposition (SVD), Discrete Cosine Transform (DCT), Wavelet Transform (Haar), Fractal Compression, Run-Length Encoding (RLE), and Predictive Coding. Each method has its unique characteristics and is suitable for different types of image data. The evaluation metrics used for comparison include Mean Squared Error (MSE), Peak Signal-to-Noise Ratio (PSNR), and Structural Similarity Index Measure (SSIM). A brief description of compression methods is given below.</p>
+<ul>
+<li><p><em>Singular Value Decomposition:</em> A linear algebra technique that decomposes a matrix into singular values and orthogonal matrices, providing efficient low-rank approximations suitable for image compression.</p></li>
+<li><p><em>DCT (Discrete Cosine Transform:</em> Widely used in JPEG compression, DCT transforms image data into a frequency domain, allowing for the quantization and truncation of less significant frequencies to reduce file size while maintaining visual quality.</p></li>
+<li><p><em>Wavelet (Haar Transform):</em> Utilizes wavelet functions to represent data at different scales and resolutions, allowing for both spatial and frequency localization, making it effective for compressing images with varying detail levels.</p></li>
+<li><p><em>Fractal Compression:</em> This method relies on self-similarity in images and encodes them by identifying and representing repetitive patterns, which can lead to high compression ratios, especially for natural images.</p></li>
+<li><p><em>RLE (Run-Length Encoding):</em> A lossless compression technique that replaces sequences of the same data value with a single value and a count, making it effective for images with large uniform areas.</p></li>
+<li><p><em>Predictive Coding:</em> This approach predicts pixel values based on neighboring pixels and encodes the difference between the predicted and actual values, effectively reducing redundancy in the image data.</p></li>
+</ul>
+<p>The performance metrics for each compression method are summarized in <a href="#tbl-image_compression_comparison" class="quarto-xref">Table&nbsp;1</a>.</p>
+<div id="tbl-image_compression_comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-image_compression_comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Comparison of Image Compression Methods
+</figcaption>
+<div aria-describedby="tbl-image_compression_comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>MSE</th>
+<th>PSNR (dB)</th>
+<th>SSIM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SVD</td>
+<td>36.1802</td>
+<td>32.5461</td>
+<td>0.8247</td>
+</tr>
+<tr class="even">
+<td>DCT</td>
+<td>107.6621</td>
+<td>27.8102</td>
+<td>0.8217</td>
+</tr>
+<tr class="odd">
+<td>Wavelet</td>
+<td>32.9375</td>
+<td>32.9539</td>
+<td>0.9582</td>
+</tr>
+<tr class="even">
+<td>Fractal</td>
+<td>20.4741</td>
+<td>35.0188</td>
+<td>0.9320</td>
+</tr>
+<tr class="odd">
+<td>RLE</td>
+<td>0.0000</td>
+<td>inf</td>
+<td>1.0000</td>
+</tr>
+<tr class="even">
+<td>Predictive</td>
+<td>107.2521</td>
+<td>27.8267</td>
+<td>0.5477</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The comparison of various image compression methods, as presented in <a href="#tbl-image_compression_comparison" class="quarto-xref">Table&nbsp;1</a>, highlights the promising performance of Singular Value Decomposition (SVD) image compression. The SVD method achieved a Mean Squared Error (MSE) of 36.1802, a Peak Signal-to-Noise Ratio (PSNR) of 32.5461 dB, and a Structural Similarity Index Measure (SSIM) of 0.8247. In terms of image quality, a PSNR value above 30 dB is generally considered acceptable for high-quality image reconstruction, and the SVD method meets this criterion. Similarly, the SSIM score of 0.8247 indicates a relatively high level of structural similarity, as values closer to 1.0 are preferred for maintaining perceptual quality. These results suggest that SVD is a promising approach for image compression, effectively balancing compression efficiency with visual quality, particularly suitable for applications that require efficient storage and satisfactory image fidelity.</p>
+</section>
+</section>
+<section id="orthogonal-subspaces-in-svd" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="orthogonal-subspaces-in-svd"><span class="header-section-number">7.2</span> Orthogonal subspaces in SVD</h3>
+<p>The Singular Value Decomposition (SVD) of the original data matrix <span class="math inline">\(X\)</span> enables its decomposition into two orthogonal subspaces: the <em>dominant subspace</em>, represented by the components <span class="math inline">\(US_kV^T\)</span>, which corresponds to the signal information, and the <em>subdominant subspace</em>, represented by <span class="math inline">\(US_{n-k}V^T\)</span>, which captures the noise components. This dual representation provides a clear delineation of the image data into signal and noise, significantly enhancing our ability to analyze and process the data effectively. This formalism can be represented as in Figure <a href="#fig-dom-subdom" class="quarto-xref">Fig.&nbsp;4</a>.</p>
+<div id="fig-dom-subdom" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dom-subdom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/domsubdom.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dom-subdom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;4: Dominant-subdominant splitting of the image SVD.
+</figcaption>
+</figure>
+</div>
+<p>Using the SVD, all the fundamental subspaces and their rank can be extracted. This residing relationship can be visualized as:</p>
+<p><span class="math display">\[\begin{align*}
+  \mathbf{X} &amp;=
+  \mathbf{U} \, \Sigma \, \mathbf{V}^{T} \\
+%
+&amp;=
+% U
+  \left[ \begin{array}{cc}
+     \color{blue}{\mathbf{U}_{\mathcal{R}}} &amp; \color{red}{\mathbf{U}_{\mathcal{N}}}
+  \end{array} \right]
+  \left[ \begin{array}{cccc|cc}
+     \sigma_{1} &amp; 0 &amp; \dots &amp;  &amp;   &amp; \dots &amp;  0 \\
+     0 &amp; \sigma_{2}  \\
+     \vdots &amp;&amp; \ddots \\
+       &amp; &amp; &amp; \sigma_{\rho} \\\hline
+       &amp; &amp; &amp; &amp; 0 &amp; \\
+     \vdots &amp;&amp;&amp;&amp;&amp;\ddots \\
+     0 &amp; &amp; &amp;   &amp;   &amp;  &amp; 0 \\
+  \end{array} \right]
+  \left[ \begin{array}{c}
+     \color{blue}{\mathbf{V}_{\mathcal{R}}}^{T} \\
+     \color{red}{\mathbf{V}_{\mathcal{N}}}^{T}
+  \end{array} \right]  \\
+  &amp; =
+   \left[ \begin{array}{cccccccc}
+    \color{blue}{u_{1}} &amp; \dots &amp; \color{blue}{u_{\rho}} &amp; \color{red}{u_{\rho+1}} &amp; \dots &amp; \color{red}{u_{m}}
+  \end{array} \right]
+  \left[ \begin{array}{cc}
+     \mathbf{S}_{\rho\times \rho} &amp; \mathbf{0} \\
+     \mathbf{0} &amp; \mathbf{0}
+  \end{array} \right]
+   \left[ \begin{array}{c}
+    \color{blue}{v_{1}^{T}} \\
+    \vdots \\
+    \color{blue}{v_{\rho}^{T}} \\
+    \color{red}{v_{\rho+1}^{T}} \\
+    \vdots \\
+    \color{red}{v_{n}^{T}}
+  \end{array} \right]
+\end{align*}\]</span></p>
+<p>The column vectors form spans for the subspaces are given by</p>
+<p><span class="math display">\[\begin{align*}
+% R A
+\color{blue}{\mathcal{R} \left( \mathbf{X} \right)} &amp;=
+\text{span} \left\{
+\color{blue}{u_{1}}, \dots , \color{blue}{u_{\rho}}
+\right\} \\
+% R A*
+\color{blue}{\mathcal{R} \left( \mathbf{X}^{T} \right)} &amp;=
+\text{span} \left\{
+\color{blue}{v_{1}}, \dots , \color{blue}{v_{\rho}}
+\right\} \\
+% N A*
+\color{red}{\mathcal{N} \left( \mathbf{X}^{T} \right)} &amp;=
+\text{span} \left\{
+\color{red}{u_{\rho+1}}, \dots , \color{red}{u_{m}}
+\right\} \\
+% N A
+\color{red}{\mathcal{N} \left( \mathbf{X} \right)} &amp;=
+\text{span} \left\{
+\color{red}{v_{\rho+1}}, \dots , \color{red}{v_{n}}
+\right\} \\
+%
+\end{align*}\]</span></p>
+<p>The conclusion is that the full SVD provides an orthonormal span for not only the two null spaces, but also both range spaces. All these theories can easily be extended to image processing. The right singular vectors associated with the vanishing singular values of <span class="math inline">\(X\)</span> define the null space of the matrix, while the left singular vectors corresponding to the non-zero singular values span the range of <span class="math inline">\(X\)</span>. Consequently, the rank of <span class="math inline">\(X\)</span> equals the count of non-zero singular values, which is directly related to the number of non-zero diagonal elements in the singular value matrix <span class="math inline">\(S\)</span>. This orthogonal partitioning of the <span class="math inline">\(M\)</span>-dimensional vector space mapped by <span class="math inline">\(X\)</span> is essential in applications such as image processing, where distinguishing between the signal and noise components can significantly enhance techniques such as watermarking.</p>
+<p><a href="#fig-svd-comparison" class="quarto-xref">Fig.&nbsp;5</a> illustrates the image data’s dominant subspace, truncated to <span class="math inline">\(k = 50\)</span> SVD components, alongside its subdominant noise subspace.</p>
+<div id="fig-svd-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svd-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/svd_comparison.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svd-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;5: Comparison of Original Image, Reconstructed Image after SVD Compression (with <span class="math inline">\(k=40\)</span>), and Extracted Noise. These subplots illustrate the effectiveness of SVD in reconstructing the original image while isolating noise components.
+</figcaption>
+</figure>
+</div>
+<p>This property of SVD effectively facilitates the identification of the rank of <span class="math inline">\(X\)</span>, the orthonormal basis for its range and null spaces, and enables optimal low-rank approximations in various norms, thus paving the way for significant advancements in image processing applications, including watermarking, where the relationship between the SVD domain and noisy or watermarked images can be leveraged effectively.</p>
+<p>To investigate the influence of the truncation factor <span class="math inline">\(k\)</span> on image quality, experiments were conducted to evaluate the Peak Signal-to-Noise Ratio (PSNR) and Structural Similarity Index (SSIM) values of reconstructed images for various <span class="math inline">\(k\)</span> values. The results, summarized in <a href="#tbl-truncation_vs_quality" class="quarto-xref">Table&nbsp;2</a>, indicate a clear trend: as the truncation factor increases, both PSNR and SSIM improve significantly. This improvement suggests that retaining more singular values enhances the quality of the reconstructed images, thereby preserving essential details and structures. Notably, the PSNR values reach a peak of 39.15 dB and the SSIM values approach 0.93 when <span class="math inline">\(k\)</span> is set to 1000, indicating high fidelity to the original image.</p>
+<div id="tbl-truncation_vs_quality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-truncation_vs_quality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Relationship between Truncation Factor $k $ and Image Quality Metrics.
+</figcaption>
+<div aria-describedby="tbl-truncation_vs_quality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(k\)</span></th>
+<th>PSNR (dB)</th>
+<th>SSIM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>14.445199</td>
+<td>0.765134</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>20.347972</td>
+<td>0.779434</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>22.906752</td>
+<td>0.784555</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>25.443104</td>
+<td>0.789932</td>
+</tr>
+<tr class="odd">
+<td>50</td>
+<td>28.667464</td>
+<td>0.799783</td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td>31.237551</td>
+<td>0.814706</td>
+</tr>
+<tr class="odd">
+<td>200</td>
+<td>33.401548</td>
+<td>0.837690</td>
+</tr>
+<tr class="even">
+<td>400</td>
+<td>35.248494</td>
+<td>0.870490</td>
+</tr>
+<tr class="odd">
+<td>600</td>
+<td>36.602859</td>
+<td>0.895303</td>
+</tr>
+<tr class="even">
+<td>800</td>
+<td>37.881342</td>
+<td>0.915886</td>
+</tr>
+<tr class="odd">
+<td>1000</td>
+<td>39.145403</td>
+<td>0.933217</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><a href="#fig-psnr_ssim_variation_plot" class="quarto-xref">Fig.&nbsp;6</a> illustrates the relationship between the truncation factor <span class="math inline">\(k\)</span> and the image quality metrics PSNR and SSIM. The horizontal axis represents the truncation factor <span class="math inline">\(k\)</span>, while the two curves depict the corresponding PSNR and SSIM values for various <span class="math inline">\(k\)</span> settings.</p>
+<div id="fig-psnr_ssim_variation_plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-psnr_ssim_variation_plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/psnr_ssim_variation_plot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-psnr_ssim_variation_plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;6: Variation of PSNR and SSIM with respect to the truncation factor $k $.
+</figcaption>
+</figure>
+</div>
+<p>By analyzing the plot, one can easily determine the appropriate truncation parameter <span class="math inline">\(k\)</span> needed to achieve a desired PSNR or SSIM value, thereby ensuring optimal fidelity and perceptual quality in the reconstructed image. This graphical representation serves as a practical tool for selecting the truncation factor, facilitating a balance between compression efficiency and image quality. For instance, if a target PSNR value of 35 dB is desired, one can project this value onto the PSNR curve and trace down to the horizontal axis to identify the corresponding <span class="math inline">\(k\)</span> value, which allows for informed decision-making in image compression settings.</p>
+</section>
+</section>
+<section id="new-role--svd-as-a-denoiser" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="new-role--svd-as-a-denoiser"><span class="header-section-number">8</span> New Role- SVD as a Denoiser</h2>
+<p>Singular Value Decomposition (SVD) is a powerful mathematical technique that has various applications in image processing, including noise filtering and digital watermarking.</p>
+<p>In the context of noise filtering, SVD can efficiently separate the noise components from the original image signal. The SVD approximates the image matrix by decomposing it into an optimal estimate of the signal and the noise components. This property makes SVD a useful tool for removing noise from images while preserving the quality and recognition of the original content.</p>
+<p>In this study, we assessed the correlation between consecutive reconstructed images as a function of the truncation parameter <span class="math inline">\(k\)</span> in Singular Value Decomposition (SVD).</p>
+<div id="fig-corr-slice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-corr-slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/corr-slice.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr-slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;7: Correlation between original and reconstructed images from image SVD.
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-corr-slice" class="quarto-xref">Fig.&nbsp;7</a>, the sharp increase in correlation between consecutive reconstructed images as <span class="math inline">\(k\)</span> rises to 200 illustrates SVD’s strong ability to retain key image details even with relatively low truncation levels. This trend suggests that the primary singular values capture essential structural information of the original image, leading to high-fidelity reconstructions while efficiently filtering out less critical components. Given this preservation capacity, we proceed to assess SVD’s denoising capability by calculating the PSNR and SSIM values for both the noisy and denoised images.</p>
+<p><a href="#fig-svd_denoising_results" class="quarto-xref">Fig.&nbsp;8</a> illustrates experimental results of the SVD-based denoising process on a high resolution image (20.0 MB, <span class="math inline">\(4480\times 6133\)</span>, at 24 bit depth).</p>
+<div id="fig-svd_denoising_results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svd_denoising_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/svd_denoising_results.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svd_denoising_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;8: Comparison of Original, Noisy, and Denoised Images using SVD.
+</figcaption>
+</figure>
+</div>
+<p>By considering the first 50 eigenimages as the image data subspace and the remainder as the noise subspace, and then removing the noise subspace, <a href="#fig-svd_denoising_results" class="quarto-xref">Fig.&nbsp;8</a> (c) shows the image after noise removal.</p>
+<p>Noise has a disproportionate impact on singular values (SVs) and singular vectors (SCs), with smaller SVs and their corresponding SCs being more severely affected compared to larger SVs and SCs. Experiments validate this phenomenon, as shown in <a href="#fig-svd_matrices_comparison" class="quarto-xref">Fig.&nbsp;9</a>, which depicts a 2-dimensional representation of the left and right SCs. This highlights the contrast between the slower changing waveforms of the former SCs and the faster changing waveforms of the latter SCs.</p>
+<div id="fig-svd_matrices_comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svd_matrices_comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/svd_matrices_comparison.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svd_matrices_comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;9: Comparison of the image with the reconstructed traces in the left singular matrix (<span class="math inline">\(U\)</span>) and the right singular matrix (V<span class="math inline">\(^T\)</span>) of noisy image.
+</figcaption>
+</figure>
+</div>
+<p>While SVD-based denoising methods have demonstrated promising results, consistency in performance across different images is often challenging, particularly within datasets like BSD400. In such cases, fixing a truncation parameter <span class="math inline">\(k\)</span> does not always yield optimal denoising performance. This limitation arises because the variance of image information captured in the singular values varies across different images. Consequently, an adaptive approach is preferable over a fixed truncation level for retaining significant image details while effectively suppressing noise.</p>
+<p>To address this, we propose dynamically thresholding the singular values rather than fixing <span class="math inline">\(k\)</span> for truncation. By removing singular values below a specific threshold, we focus on preserving image components that substantially contribute to the signal, thereby enhancing denoising effectiveness. Experimentally, we observe that setting the truncation threshold for singular values to <span class="math inline">\(0.618 \times \text{mean}(\Sigma)\)</span>, where <span class="math inline">\(\Sigma\)</span> denotes the diagonal matrix of singular values, achieves optimal denoising. This threshold corresponds to approximately 61.8% of the mean singular value magnitude, which is notably effective in retaining essential image features while filtering out high-frequency noise components.</p>
+<p>Our empirical results further validate this approach, revealing that the dynamic thresholding method consistently produces higher Peak Signal-to-Noise Ratio (PSNR) values across a variety of images in the BSD400 dataset when compared to fixed-<span class="math inline">\(k\)</span> truncation. This improvement underscores the robustness of the adaptive threshold in aligning the denoising process with each image’s inherent structural properties, thereby achieving superior fidelity to the original image.</p>
+<p>The effectiveness of the adaptive thresholding approach in Singular Value Decomposition (SVD) for image denoising is exemplified in <a href="#fig-svd_denoising_resultsBSD" class="quarto-xref">Fig.&nbsp;10</a>. This figure displays an image from the BSD400 dataset, showcasing the original, noisy input and denoised output along with the PSNR and SSIM measures.</p>
+<div id="fig-svd_denoising_resultsBSD" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svd_denoising_resultsBSD-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/svd_denoising_resultsBSD.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svd_denoising_resultsBSD-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;10: Comparison of Original, Noisy, and Denoised images using SVD on BSD400 sample image.
+</figcaption>
+</figure>
+</div>
+<section id="comparison-and-advantages-of-svd-based-denoising-in-medical-imaging" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="comparison-and-advantages-of-svd-based-denoising-in-medical-imaging"><span class="header-section-number">8.1</span> Comparison and Advantages of SVD-Based Denoising in Medical Imaging</h3>
+<p>In medical imaging, one major hurdle is the lack of a clean reference image, which complicates the task of denoising. Creating datasets with perfect reference images is often impossible. This challenge is made even harder by the noise that arises from natural physiological movements, which can introduce dynamic noise into MRI, CT, and ultrasound scans, even if the patient is mostly still.</p>
+<p>Many traditional denoising methods depend on machine learning algorithms that are optimized with the help of reference images or alternative <em>doubly noisy</em> images that serve as substitutes for the ideal ground truth. For example, recent research, including a study by Floquet et al.&nbsp;(2024), has shown that using noisy reference images can effectively help adjust the parameters for denoising techniques.</p>
+<p>In these scenarios, optimization methods such as the Scipy optimizer and stochastic gradient optimization are applied to refine the algorithms, aiming to reduce the Mean Square Error (MSE). This fine-tuning process has resulted in impressive outcomes, achieving a Peak Signal-to-Noise Ratio (PSNR) of 33.8, indicating a significant improvement in image quality (reference: <a href="https://sijuswamy.github.io/Denoising-Manuscript/" class="uri">https://sijuswamy.github.io/Denoising-Manuscript/</a>).</p>
+<p>On the other hand, an SVD-based approach has the potential to avoid the requirement for having any ground truth reference which could be more concept around it altogether. Using the SVD it is then possible to filter noise depending on the singular values relating to structural image information. The denoising based on SVD yielded a PSNR of 32.27 on a similarly noisy image in a comparative experiment—a value with 5% from PSNRs achieved by parameter-optimized methods of denoising without a need of a reference image. However, its independence from ground truth is an advantage for medical applications where unsupervised methods may reduce cost and complexity of operation.</p>
+<p>These results could be further improved with a hybrid method that combines a first stage of initial denoising and even using a noisy image as a prior together with a method with optimized parameters then using SVD to help capture dominant features in images. Even without a reference image, SVD is able to act as an adaptive, standalone denoising solution and opens sustainable possibilities in the medical innovations context where the reference is commonly unknown and the denoising process is crucial for the meaningful diagnosis.</p>
+</section>
+</section>
+<section id="image-forensics-with-svd" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="image-forensics-with-svd"><span class="header-section-number">9</span> Image Forensics with SVD</h2>
+<p>In the contemporary digital era, digital forensics has become crucial for combating counterfeiting and manipulation of digital evidence aimed at illicit profit or legal evasion. Forensic research encompasses various domains, including steganography, watermarking, authentication, and labeling. Numerous solutions have been developed to fulfill consumer demands, such as authentication systems, DVD copy control, and hardware/software watermarking.</p>
+<p>Singular Value Decomposition (SVD) serves as a potent method in this realm, concentrating significant signal energy into a minimal number of coefficients while adapting to local statistical variations in images. As an image-adaptive transform, SVD requires careful representation to ensure accurate data retrieval.</p>
+<section id="image-watermarking-with-scaled-additive-approach" class="level3" data-number="9.1">
+<h3 data-number="9.1" class="anchored" data-anchor-id="image-watermarking-with-scaled-additive-approach"><span class="header-section-number">9.1</span> Image watermarking with scaled additive approach</h3>
+<p>SVD-based watermarking techniques exploit the stability of singular values (SVs), which represent the image’s luminance. Minor alterations in these values do not drastically compromise the visual quality of the host image. Methods typically utilize either the largest or smallest SVs for watermark embedding, employing additive techniques or quantization. For instance, D. Chandra’s methodology involves the additive incorporation of scaled watermark singular values into the singular values of the host image <span class="math inline">\(X\)</span> <span class="citation" data-cites="chandra2002digital"><a href="#ref-chandra2002digital" role="doc-biblioref">[4]</a></span>:</p>
+<p><span class="math display">\[
+SV_{\text{modified}} = SV_{\text{original}} + \alpha \cdot \text{Watermark}
+\]</span></p>
+<p>Here, <span class="math inline">\(\alpha\)</span> denotes a scaling factor, allowing for effective watermark integration while maintaining the fidelity of the original image. The scaled additive algorithm for image watermarking is given in the following algorithm.</p>
+<div id="algo-SA" class="algorithm">
+<p><strong>Algorithm</strong>: Scaled Additive Approach for Image Watermarking</p>
+<p><strong>Inputs</strong>: - Cover image <span class="math inline">\(A\)</span> - Watermark <span class="math inline">\(W\)</span> - Scaling factor <span class="math inline">\(\alpha\)</span></p>
+<p><strong>Outputs</strong>: - Watermarked image <span class="math inline">\(A_w\)</span> - Extracted watermark <span class="math inline">\(W_e\)</span></p>
+<p><strong>Steps</strong>:</p>
+<ol type="1">
+<li><strong>Watermark Embedding</strong>:
+<ul>
+<li>Compute SVD of the cover image <span class="math inline">\(A\)</span>: <span class="math inline">\([U_1, S_1, V_1] \gets \text{svd}(A)\)</span></li>
+<li>Modify the singular values by adding the scaled watermark: <span class="math inline">\(\text{temp} \gets S_1 + (\alpha \cdot W)\)</span></li>
+<li>Compute SVD of the modified singular matrix: <span class="math inline">\([U_w, S_w, V_w] \gets \text{svd}(\text{temp})\)</span></li>
+<li>Reconstruct the watermarked image: <span class="math inline">\(A_w \gets U_1 \cdot S_w \cdot V_1^T\)</span></li>
+</ul></li>
+<li><strong>Watermark Extraction</strong>:
+<ul>
+<li>Compute SVD of the watermarked image <span class="math inline">\(A_w\)</span>: <span class="math inline">\([U_{w1}, S_{w1}, V_{w1}] \gets \text{svd}(A_w)\)</span></li>
+<li>Reconstruct the matrix <span class="math inline">\(D\)</span> using the new singular values: <span class="math inline">\(D \gets U_w \cdot S_{w1} \cdot V_w^T\)</span></li>
+<li>Extract the watermark: <span class="math inline">\(W_e \gets \frac{D - S_1}{\alpha}\)</span></li>
+</ul></li>
+<li><strong>Verification</strong>:
+<ul>
+<li>If <span class="math inline">\(W == W_e\)</span>:
+<ul>
+<li>The image is <strong>not attacked</strong>.</li>
+</ul></li>
+<li>Else:
+<ul>
+<li>The image has been <strong>attacked</strong>.</li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+<p><a href="#fig-inageforensic" class="quarto-xref">Fig.&nbsp;11</a> represent the typical workflow of image forensic.</p>
+<div id="fig-inageforensic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inageforensic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/inageforensic.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inageforensic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;11: Image forensic workflow.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-image-forensicSVD" class="quarto-xref">Fig.&nbsp;12</a> demonstrate the watermarking of images using SVD. Since the extracted watermark is exactly what we embedded in the covering image, no attack is detected <span class="citation" data-cites="Sharma2024"><a href="#ref-Sharma2024" role="doc-biblioref">[11]</a></span>.</p>
+<div id="fig-image-forensicSVD" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-image-forensicSVD-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/image-forensicSVD.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image-forensicSVD-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;12: Demonstration of watermarking a confidential image using SVD.
+</figcaption>
+</figure>
+</div>
+<p>In this first evaluation the PSNR value of watermarked image is 29.08 and the extraction is successful.</p>
+<p>To evaluate the robustness and effectiveness of the Singular Value Decomposition (SVD)-based watermarking approach on a broader spectrum of images, using the BSD400 dataset offers a comprehensive test bed. The BSD400 dataset contains a wide variety of images with intricate textures, fine details, and different visual complexities, making it ideal for testing how well the SVD-based watermarking technique can embed and extract watermarks under varied conditions.</p>
+<p>By selecting images with delicate content, such as running letters and intricate textures, the goal is to assess how well the watermark remains visually unobtrusive in complex scenes while being resilient to potential attacks (such as noise, compression, or cropping). This method will also allow for calculating objective quality metrics like PSNR across different image categories, providing a robust understanding of watermark quality and imperceptibility.</p>
+</section>
+<section id="image-watermarking-with-adaptive-scaled-additive-approach" class="level3" data-number="9.2">
+<h3 data-number="9.2" class="anchored" data-anchor-id="image-watermarking-with-adaptive-scaled-additive-approach"><span class="header-section-number">9.2</span> Image watermarking with adaptive scaled additive approach</h3>
+<p>Using the <em>test_077.png</em> image from the BSD400 dataset, we employ an adaptive approach to watermarking that integrates D. Chandra’s scaled addition technique with a balanced formula <span class="citation" data-cites="chandra2002digital"><a href="#ref-chandra2002digital" role="doc-biblioref">[4]</a></span>:</p>
+<p><span class="math display">\[\begin{equation}
+    \text{SV}_{\text{mod}} = (1 - \alpha) \cdot \text{SV}_{\text{img}} + \alpha \cdot \text{Watermark}
+\end{equation}\]</span></p>
+<p>Algorithm for the adaptive scaled additive (ASA) approach is shown below.</p>
+<div id="algo-ADAPTIVE" class="algorithm">
+<p><strong>Algorithm</strong>: Scaled Additive Adaptive Approach for Image Watermarking</p>
+<p><strong>Inputs</strong>: - Cover image <span class="math inline">\(A\)</span> - Watermark <span class="math inline">\(W\)</span> - Scaling factor <span class="math inline">\(\alpha\)</span></p>
+<p><strong>Outputs</strong>: - Watermarked image <span class="math inline">\(A_w\)</span> - Extracted watermark <span class="math inline">\(W_e\)</span></p>
+<p><strong>Steps</strong>:</p>
+<ol type="1">
+<li><strong>Watermark Embedding</strong>:
+<ul>
+<li>Compute SVD of the cover image <span class="math inline">\(A\)</span>: <span class="math inline">\([U_1, S_1, V_1] \gets \text{svd}(A)\)</span></li>
+<li>Modify the singular values by adding the scaled watermark adaptively: <span class="math inline">\(\text{temp} \gets (1 - \alpha) \cdot S_1 + (\alpha \cdot W)\)</span></li>
+<li>Compute SVD of the modified singular matrix: <span class="math inline">\([U_w, S_w, V_w] \gets \text{svd}(\text{temp})\)</span></li>
+<li>Reconstruct the watermarked image: <span class="math inline">\(A_w \gets U_1 \cdot S_w \cdot V_1^T\)</span></li>
+</ul></li>
+<li><strong>Watermark Extraction</strong>:
+<ul>
+<li>Compute SVD of the watermarked image <span class="math inline">\(A_w\)</span>: <span class="math inline">\([U_{w1}, S_{w1}, V_{w1}] \gets \text{svd}(A_w)\)</span></li>
+<li>Reconstruct the matrix <span class="math inline">\(D\)</span> using the new singular values: <span class="math inline">\(D \gets U_w \cdot S_{w1} \cdot V_w^T\)</span></li>
+<li>Extract the watermark: <span class="math inline">\(W_e \gets \frac{D - S_1}{\alpha}\)</span></li>
+</ul></li>
+<li><strong>Verification</strong>:
+<ul>
+<li>If <span class="math inline">\(W == W_e\)</span>:
+<ul>
+<li>The image is <strong>not attacked</strong>.</li>
+</ul></li>
+<li>Else:
+<ul>
+<li>The image has been <strong>attacked</strong>.</li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+<p>This new approach modifies the singular values by proportionally blending the image’s original details with the watermark content based on the parameter <span class="math inline">\(\alpha\)</span>. The adaptive blend allows for fine-tuning the watermark’s influence, thus optimizing both its visibility and robustness.</p>
+<p>This adaptive watermarking formula . The formula provides <em>high readability</em> and <em>forensic resilience</em> and enables the watermark to stay subtle within the image, while enhancing durability against forensic attacks. This allows for improved image readability and detail retention, particularly in face images like <em>test_077.png</em>.</p>
+<p>As a next step, experiment with various values of <span class="math inline">\(\alpha\)</span> to fine-tune the watermark’s visibility and robustness. Additionally, evaluate the PSNR (Peak Signal-to-Noise Ratio) values to assess the balance achieved by the adaptive method.</p>
+</section>
+<section id="perceptual-forensic-approach-for-image-watermarking" class="level3" data-number="9.3">
+<h3 data-number="9.3" class="anchored" data-anchor-id="perceptual-forensic-approach-for-image-watermarking"><span class="header-section-number">9.3</span> Perceptual Forensic Approach for Image Watermarking</h3>
+<p>The perceptual forensic approach for image watermarking, introduced by Sadek, represents a significant advance in singular value decomposition (SVD)-based watermarking techniques by targeting robustness and imperceptibility in forensic applications. This approach, termed Global SVD (GSVD), employs a private (non-blind) methodology, making it suitable for sensitive forensic tasks where watermark retrieval without the original image is critical. In this technique, the watermark data is optimally embedded within the host image’s less significant subspace, often referred to as the <em>noise subspace</em>. This embedding choice leverages the low-impact regions of the image’s singular value structure, thus maintaining the original image quality while preserving the watermark’s resilience.</p>
+<p>A key innovation in Sadek’s method is the scaled addition of the watermark data subspace into the host image’s singular values. Traditional SVD-based watermarking techniques typically rely on a direct scaled addition of watermark values to the singular values of the cover image. However, this conventional approach often neglects the varying magnitude across the singular value spectrum, leading to uneven watermark integration that may affect image quality. Sadek’s approach addresses this limitation by <em>flattening</em> the range of singular values before watermark embedding, which smooths out the differences in value magnitude and allows for a more perceptually consistent embedding. This adjustment not only enhances the watermark’s imperceptibility but also strengthens its resilience against potential distortions or attacks, which are common in forensic scenarios.</p>
+<p>The GSVD-based perceptual forensic approach is inherently adaptable, allowing the embedded watermark to withstand different types of image manipulations depending on the robustness requirements. By embedding the watermark within the less visually significant regions of the singular value matrix, the GSVD technique achieves a balance between maintaining high perceptual quality and ensuring the watermark’s durability.</p>
+<p>The algorithm for the perceptual forensic method for watermarking is given below.</p>
+<div id="algo-PFA" class="algorithm">
+<p><strong>Algorithm</strong>: Perceptual Forensic Watermarking using SVD</p>
+<p><strong>Inputs</strong>: - Cover image <span class="math inline">\(X\)</span> - Watermark <span class="math inline">\(W\)</span> - Scaling factor <span class="math inline">\(\alpha\)</span> - Threshold parameter <span class="math inline">\(k\)</span></p>
+<p><strong>Outputs</strong>: - Watermarked image <span class="math inline">\(Y\)</span> - Extracted watermark <span class="math inline">\(W_e\)</span></p>
+<p><strong>Steps</strong>:</p>
+<ol type="1">
+<li><p><strong>Input</strong>: Read cover image <span class="math inline">\(X\)</span> and watermark <span class="math inline">\(W\)</span>.</p></li>
+<li><p><strong>Compute SVD</strong>: Perform the Singular Value Decomposition (SVD) on both <span class="math inline">\(X\)</span> and <span class="math inline">\(W\)</span>:</p>
+<ul>
+<li><span class="math inline">\(X = U_h S_h V_h^T\)</span></li>
+<li><span class="math inline">\(W = U_w S_w V_w^T\)</span></li>
+</ul></li>
+<li><p><strong>Define Scaled Addition for Modified Singular Values</strong>:</p>
+<ul>
+<li>For <span class="math inline">\(i = M - k\)</span> to <span class="math inline">\(M\)</span>, with <span class="math inline">\(q = 1\)</span> to <span class="math inline">\(k\)</span>:
+<ul>
+<li><span class="math inline">\(S_m(i) = S_h(i) + \alpha \cdot \ln(S_w(q))\)</span></li>
+</ul></li>
+<li>For all other <span class="math inline">\(i\)</span>, set <span class="math inline">\(S_m(i) = S_h(i)\)</span>.</li>
+</ul></li>
+<li><p><strong>Form the Watermarked Image</strong> <span class="math inline">\(Y\)</span>:</p>
+<ul>
+<li><span class="math inline">\(Y = U_h S_m V_h^T\)</span></li>
+</ul></li>
+<li><p><strong>Reconstruct Singular Values for Watermark Extraction</strong>:</p>
+<ul>
+<li>For <span class="math inline">\(i = M - k\)</span> to <span class="math inline">\(M\)</span>:
+<ul>
+<li><span class="math inline">\(S'_w(i) = \exp\left(\frac{S_m(i) - S_h(i)}{\alpha}\right)\)</span></li>
+</ul></li>
+</ul></li>
+<li><p><strong>Extract the Watermark</strong>:</p>
+<ul>
+<li><span class="math inline">\(W_e = U_w S'_w V_w^T\)</span></li>
+</ul></li>
+<li><p><strong>Reconstruction Check</strong>: Verify watermark accuracy by comparing <span class="math inline">\(W_e\)</span> with <span class="math inline">\(W\)</span>.</p></li>
+</ol>
+</div>
+<p>This method is particularly useful in forensic watermarking applications that demand both high fidelity and robustness, such as in medical imaging and high-resolution photographic forensics, where maintaining image integrity is paramount. This technique’s ability to fine-tune watermark robustness based on singular value dynamics, while preserving the host image quality, marks it as a promising advancement in forensic watermarking applications.</p>
+<p><a href="#fig-perceptualplusscaledaddition" class="quarto-xref">Fig.&nbsp;13</a> illustrate the results of the adaptive watermarking technique using D. Chandra’s approach and the perceptual forensic approach, applied to a sample image in the BSD400 image dataset at <span class="math inline">\(\alpha=0.01\)</span>. The first row shows the original and watermark-modified images, while the second row demonstrates the images after the application of direct perceptual forensic watermarking and the images with a Gaussian noise for forensic testing <span class="citation" data-cites="sadek2012svd"><a href="#ref-sadek2012svd" role="doc-biblioref">[6]</a></span>.</p>
+<div id="fig-perceptualplusscaledaddition" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-perceptualplusscaledaddition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/perceptualplusscaledaddition.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-perceptualplusscaledaddition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;13: Results of Watermarking with scaled addition and perceptual forensic approaches using SVD.
+</figcaption>
+</figure>
+</div>
+<p>From <a href="#fig-perceptualplusscaledaddition" class="quarto-xref">Fig.&nbsp;13</a> (d), the perceptive forensic approach is a winner in maintaining the image details in watermarking and this fact is substantiated with <a href="#tbl-PSNRall" class="quarto-xref">Table&nbsp;3</a> . Also it is noted that noising after watermarking the image through SVD produces almost same PSNR across the experiments. A detailed comparison of image detailing after watermarking on uncompressed and compressed version of the BSD400 image <em>test_077.png</em> is shown in Table <a href="#tbl-PSNRcomparison" class="quarto-xref">Table&nbsp;4</a>.</p>
+<div id="tbl-PSNRall" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-PSNRall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Peak Signal to Noise Ratio of various watermarked versions of <em>test_077</em> image from BSD400 dataset under scaled additive (SA) and adaptive scaled additive (ASA) approaches.
+</figcaption>
+<div aria-describedby="tbl-PSNRall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Image type</th>
+<th><span class="math inline">\(\alpha=0.01\)</span> (SA)</th>
+<th><span class="math inline">\(\alpha=0.01\)</span> (ASA)</th>
+<th><span class="math inline">\(\alpha=0.1\)</span> (SA)</th>
+<th><span class="math inline">\(\alpha=0.1\)</span> (ASA)</th>
+<th><span class="math inline">\(\alpha=0.2\)</span> (SA)</th>
+<th><span class="math inline">\(\alpha=0.2\)</span> (ASA)</th>
+<th><span class="math inline">\(\alpha=0.3\)</span> (SA)</th>
+<th><span class="math inline">\(\alpha=0.3\)</span> (ASA)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Watermarked</td>
+<td>61.84</td>
+<td>46.41</td>
+<td>38.83</td>
+<td>26.56</td>
+<td>30.82</td>
+<td>20.68</td>
+<td>25.16</td>
+<td>17.35</td>
+</tr>
+<tr class="even">
+<td>Noised after watermarked</td>
+<td>20.70</td>
+<td>20.66</td>
+<td>20.66</td>
+<td>19.74</td>
+<td>20.48</td>
+<td>17.86</td>
+<td>19.91</td>
+<td>16.06</td>
+</tr>
+<tr class="odd">
+<td>Watermarked &amp; Compressed</td>
+<td>49.32</td>
+<td>44.56</td>
+<td>38.60</td>
+<td>26.54</td>
+<td>31.07</td>
+<td>20.70</td>
+<td>26.03</td>
+<td>17.49</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>From <a href="#tbl-PSNRcomparison" class="quarto-xref">Table&nbsp;4</a>, it is clear that both scaled additive and adaptive scaled additive approaches gives maximum image detaining in the watermarked state is at lower values of <span class="math inline">\(\alpha\)</span>. Maintaining readability and security is the key aspect in image forensic. So <span class="math inline">\(\alpha=0.01\)</span> is a safe choice. At the same level of scaling the perceptual forensic approach is used in the BSD400 image. Comparison of PSNR values of scaled additive, adaptive scaled additive and the perceptual forensic approaches at <span class="math inline">\(\alpha=0.01\)</span> is shown in <a href="#tbl-PSNRall" class="quarto-xref">Table&nbsp;3</a>.</p>
+<div id="tbl-PSNRcomparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-PSNRcomparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Peak Signal to Noise Ratio of various watermarked versions of <em>test_077</em> image from BSD400 dataset under scaled additive (SA), adaptive scaled additive (ASA) and perceptual forensic approaches.
+</figcaption>
+<div aria-describedby="tbl-PSNRcomparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 22%">
+<col style="width: 28%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Image type</th>
+<th>Scaled Additive</th>
+<th>Adaptive Scaled Additive</th>
+<th>Perceptual Forensic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Watermarked</td>
+<td>61.84</td>
+<td>46.41</td>
+<td>75.17</td>
+</tr>
+<tr class="even">
+<td>Noised after watermarked</td>
+<td>20.70</td>
+<td>20.66</td>
+<td>20.68</td>
+</tr>
+<tr class="odd">
+<td>Watermarked &amp; Compressed</td>
+<td>49.32</td>
+<td>44.56</td>
+<td>38.87</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Watermarking through Singular Value Decomposition (SVD) is emerging as a promising method in the field of medical imaging to protect data integrity and authenticity. In our study, an available CT image was used to embed a watermark using both a scaled addition method and an adaptive perceptual forensic approach.</p>
+<p>When unaltered, the watermark was effectively extracted, showing that SVD-based watermarking can preserve image integrity under normal conditions. However, when noise was introduced after embedding, the extracted watermark showed substantial degradation, highlighting the technique’s sensitivity to potential tampering.</p>
+<div id="fig-BrainCTPerceptualWM" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BrainCTPerceptualWM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Notebooks/figures/BrainCTPerceptualWM.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BrainCTPerceptualWM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Fig.&nbsp;14: Comparison of Brain CT images: (a) Original Brain CT Image, (b) Watermarked with scaled additive approach, (c) Watermarked with perceptual forensic approach.
+</figcaption>
+</figure>
+</div>
+<p>The effect of watermarking on the Brain CT image using different image forensic approaches is shown in <a href="#fig-BrainCTPerceptualWM" class="quarto-xref">Fig.&nbsp;14</a>. The scaled addition method achieved a Peak Signal-to-Noise Ratio (PSNR) of 33.93, balancing visibility and quality. Meanwhile, the perceptual forensic approach, designed to better manage watermark strength relative to image details, attained a PSNR of 102.87, maintaining high image fidelity. These results indicate that SVD-based watermarking techniques can be effective for medical imaging applications, where preserving diagnostic quality while protecting image authenticity is critical. This adaptive method offers a balanced approach to ensure data protection without compromising readability and detail in medical images.</p>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">10</span> Conclusion</h2>
+<p>This study investigated SVD-based image processing applications, specifically focusing on image compression, image denoising, and image forensic analysis. Through experimental analysis on high-resolution images, the BSD400 dataset, and medical images, this work examined the effectiveness of two watermarking approaches: scaled additive embedding and perceptual forensic embedding. In the scaled additive approach, the watermark was scaled and embedded within the singular values of the image before full SVD decomposition. To improve the adaptability across images with varying detail levels, an adaptive scaling mechanism was introduced, achieving high-quality image blending with minor scaling factors <span class="math inline">\((\alpha &lt; 0.02)\)</span>.</p>
+<p>In the perceptual forensic approach, watermark embedding targeted distinct ranges of singular values, optimizing the visibility and robustness of the watermark under forensic scrutiny. This method employed a locally adaptive SVD, enhancing watermark resilience while preserving essential image details, making it effective for applications requiring forensic analysis. Additionally, image denoising was implemented as an automatic fine-tuning step to reduce noise introduced during watermarking, further solidifying the watermark’s readability and stability.</p>
+<p>This work is a partial replication and extension of Sadek’s review on SVD-based image processing applications, which highlights the state-of-the-art methods and challenges in SVD applications for image processing <span class="citation" data-cites="sadek2012svd"><a href="#ref-sadek2012svd" role="doc-biblioref">[6]</a></span>. By incorporating aspects of automated fine-tuning for denoising algorithms in the watermarking process, this study contributes a refined understanding of how SVD can be leveraged to balance image quality and watermark resilience. Overall, the findings affirm that SVD-based techniques fulfill the study’s objectives across compression, denoising, and forensic applications, providing a flexible and robust approach to image processing that is effective across various image types and contexts. Future work may explore additional fine-tuning and new methodologies to enhance forensic robustness and adaptive capabilities in real-world applications.</p>
+</section>
+<section id="references" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="references"><span class="header-section-number">11</span> References</h2>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-moonen1992singular" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. Moonen, P. Van Dooren, and J. Vandewalle, <span>“A singular value decomposition updating algorithm for subspace tracking,”</span> <em>SIAM Journal on Matrix Analysis and Applications</em>, vol. 13, no. 4, pp. 1015–1038, 1992. </div>
+</div>
+<div id="ref-andrews1976singular" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">H. Andrews and C. Patterson, <span>“Singular value decompositions and digital image processing,”</span> <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, vol. 24, no. 1, pp. 26–53, 1976. </div>
+</div>
+<div id="ref-kakarala2001signal" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">R. Kakarala and P. O. Ogunbona, <span>“Signal analysis using a multiresolution form of the singular value decomposition,”</span> <em>IEEE Transactions on Image processing</em>, vol. 10, no. 5, pp. 724–735, 2001. </div>
+</div>
+<div id="ref-chandra2002digital" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">D. S. Chandra, <span>“Digital image watermarking using singular value decomposition,”</span> in <em>The 2002 45th midwest symposium on circuits and systems, 2002. MWSCAS-2002.</em>, 2002, vol. 3, pp. III–III. </div>
+</div>
+<div id="ref-sadek2008blind" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">R. A. Sadek, <span>“<span class="nocase">Blind synthesis attack on SVD based watermarking techniques</span>,”</span> in <em>2008 international conference on computational intelligence for modelling control &amp; automation</em>, 2008, pp. 140–145. </div>
+</div>
+<div id="ref-sadek2012svd" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">R. A. Sadek, <span>“<span class="nocase">SVD based image processing applications: state of the art, contributions and research challenges</span>,”</span> <em>arXiv preprint arXiv:1211.7102</em>, 2012. </div>
+</div>
+<div id="ref-kahu2013image" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">S. Kahu and R. Rahate, <span>“Image compression using singular value decomposition,”</span> <em>International Journal of Advancements in Research &amp; Technology</em>, vol. 2, no. 8, pp. 244–248, 2013. </div>
+</div>
+<div id="ref-strang2022introduction" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">G. Strang, <em>Introduction to linear algebra</em>. SIAM, 2022. </div>
+</div>
+<div id="ref-kamm1998svd" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">J. L. Kamm, <span>“<span class="nocase">SVD-based methods for signal and image restoration</span>,”</span> <em>PhD Thesis</em>, 1998. </div>
+</div>
+<div id="ref-deisenroth2020mathematics" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">M. P. Deisenroth, A. A. Faisal, and C. S. Ong, <em>Mathematics for machine learning</em>. Cambridge University Press, 2020. </div>
+</div>
+<div id="ref-Sharma2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">N. K. Sharma, <span>“<span>SVD Domain Watermarking</span>.”</span> 2024 [Online]. Available: <a href="https://www.mathworks.com/matlabcentral/fileexchange/64554-svd-domain-watermarking">https://www.mathworks.com/matlabcentral/fileexchange/64554-svd-domain-watermarking</a></div>
+</div>
+</div>
+</section>
+</div>
+
+<div id="quarto-accordion" class="accordion d-none d-md-block" role="tablist">
+    <div class="accordion-item container" id="">
+    <div class="accordion-header d-flex justify-content-between" id="heading-author" role="tab">
+      <button id="authors" class="accordion-button p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-authors" aria-expanded="false" aria-controls="collapse-authors">Authors</button>
+    </div>
+    <div id="collapse-authors" class="accordion-body collapse" aria-labelledby="heading-authors" data-bs-parent="#quarto-accordion" role="tabpanel">
+          <div class="accordion-authors container">
+      <div class="author-card"><div class="grid gap-0">
+                <div class="author-photo g-col-3 pe-3">
+          <img src="Swamy.jpg" alt="Author image of Siju K S">
+        </div>
+        <div class="g-col-9">
+          <div><span class="author-info"><a href="https://dfolio.fr/" title="Amrita Vishwa Vidyapeetham, School of Artificial Intelligence, CEN, ">Siju K S</a><a href="https://orcid.org/0009-0004-1983-5574" class="quarto-title-author-orcid px-1" target="orcid.widget" rel="me noopener noreferrer"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width: 1em; margin-inline-start: 0.5em" alt="ORCID iD icon"></a></span></div>
+          <div>School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, 641 112 India, CEN</div>
+        </div>
+              </div>
+      <div><p>Pursuing research in Artificial Intelligence under the Faculty of Amrita School of Artificial Intelligence at the Center of Excellence in Computational Engineering &amp; Networking, Amrita Vishwa Vidyapeetham, Coimbatore.</p></div>
+      </div>
+      </div>
+           <div class="accordion-authors container">
+      <div class="author-card"><div class="grid gap-0">
+                <div class="author-photo g-col-3 pe-3">
+          <img src="soman_sir.jpg" alt="Author image of Dr.Soman K.P">
+        </div>
+        <div class="g-col-9">
+          <div><span class="author-info">Dr.Soman K.P</span></div>
+          <div>Professor &amp; Dean, Amrita School of Artificial Intelligence</div>
+        </div>
+              </div>
+      <div><p>Dr.&nbsp;Soman K. P. currently serves as the Dean of the School of Artificial Intelligence (AI), Head and Professor at Amrita Centre for Computational Engineering and Networking (CEN), Coimbatore Campus. He has more than 27 years of research and teaching experience in Artificial Intelligence (AI) and Data Science-related subjects at Amrita Vishwa Vidyapeetham, Coimbatore. He has authored over 500+ publications in reputed journals such as IEEE Transactions, IEEE Access, Applied Energy, and several conference proceedings.</p></div>
+      </div>
+      </div>
+         </div>
+  </div>
+  
+    <div class="accordion-item container">
+    <div class="accordion-header d-flex justify-content-between" id="heading-references" role="tab">
+      <button id="authors" class="accordion-button p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-references" aria-expanded="false" aria-controls="collapse-references">References</button>
+    </div>
+    <div id="collapse-references" class="accordion-body collapse" aria-labelledby="heading-references" data-bs-parent="#quarto-accordion" role="tabpanel">
+      <section id="references" class="accordion-references">
+        <div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+        <div id="ref-moonen1992singular" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. Moonen, P. Van Dooren, and J. Vandewalle, <span>“A singular value decomposition updating algorithm for subspace tracking,”</span> <em>SIAM Journal on Matrix Analysis and Applications</em>, vol. 13, no. 4, pp. 1015–1038, 1992. </div>
+        </div>
+        <div id="ref-andrews1976singular" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[2] </div><div class="csl-right-inline">H. Andrews and C. Patterson, <span>“Singular value decompositions and digital image processing,”</span> <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, vol. 24, no. 1, pp. 26–53, 1976. </div>
+        </div>
+        <div id="ref-kakarala2001signal" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[3] </div><div class="csl-right-inline">R. Kakarala and P. O. Ogunbona, <span>“Signal analysis using a multiresolution form of the singular value decomposition,”</span> <em>IEEE Transactions on Image processing</em>, vol. 10, no. 5, pp. 724–735, 2001. </div>
+        </div>
+        <div id="ref-chandra2002digital" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[4] </div><div class="csl-right-inline">D. S. Chandra, <span>“Digital image watermarking using singular value decomposition,”</span> in <em>The 2002 45th midwest symposium on circuits and systems, 2002. MWSCAS-2002.</em>, 2002, vol. 3, pp. III–III. </div>
+        </div>
+        <div id="ref-sadek2008blind" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[5] </div><div class="csl-right-inline">R. A. Sadek, <span>“<span class="nocase">Blind synthesis attack on SVD based watermarking techniques</span>,”</span> in <em>2008 international conference on computational intelligence for modelling control &amp; automation</em>, 2008, pp. 140–145. </div>
+        </div>
+        <div id="ref-sadek2012svd" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[6] </div><div class="csl-right-inline">R. A. Sadek, <span>“<span class="nocase">SVD based image processing applications: state of the art, contributions and research challenges</span>,”</span> <em>arXiv preprint arXiv:1211.7102</em>, 2012. </div>
+        </div>
+        <div id="ref-kahu2013image" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[7] </div><div class="csl-right-inline">S. Kahu and R. Rahate, <span>“Image compression using singular value decomposition,”</span> <em>International Journal of Advancements in Research &amp; Technology</em>, vol. 2, no. 8, pp. 244–248, 2013. </div>
+        </div>
+        <div id="ref-strang2022introduction" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[8] </div><div class="csl-right-inline">G. Strang, <em>Introduction to linear algebra</em>. SIAM, 2022. </div>
+        </div>
+        <div id="ref-kamm1998svd" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[9] </div><div class="csl-right-inline">J. L. Kamm, <span>“<span class="nocase">SVD-based methods for signal and image restoration</span>,”</span> <em>PhD Thesis</em>, 1998. </div>
+        </div>
+        <div id="ref-deisenroth2020mathematics" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[10] </div><div class="csl-right-inline">M. P. Deisenroth, A. A. Faisal, and C. S. Ong, <em>Mathematics for machine learning</em>. Cambridge University Press, 2020. </div>
+        </div>
+        <div id="ref-Sharma2024" class="csl-entry" role="listitem">
+        <div class="csl-left-margin">[11] </div><div class="csl-right-inline">N. K. Sharma, <span>“<span>SVD Domain Watermarking</span>.”</span> 2024 [Online]. Available: <a href="https://www.mathworks.com/matlabcentral/fileexchange/64554-svd-domain-watermarking">https://www.mathworks.com/matlabcentral/fileexchange/64554-svd-domain-watermarking</a></div>
+        </div>
+        </div>
+      </section>
+    </div>
+  </div>
+      <div class="accordion-item container">
+    <div class="accordion-header d-flex justify-content-between" id="heading-keywords" role="tab">
+      <button id="authors" class="accordion-button p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-keywords" aria-expanded="false" aria-controls="collapse-keywords">Keywords</button>
+    </div>
+    <div id="collapse-keywords" class="accordion-body collapse" aria-labelledby="heading-keywords" data-bs-parent="#quarto-accordion" role="tabpanel">
+      <div class="accordion-keywords">
+        <strong>Author Keywords</strong>
+        <ul class="mt-3 p-0">
+                <li>Singular Value Decomposition (SVD), </li><li>Image Processing, </li><li>Image Compression, </li><li>Image Denoising, </li><li>Digital Watermarking, </li><li>Noise Filtering, </li><li>Matrix Factorization, </li><li>Rank Approximation, </li><li>Frobenius Norm, </li><li>Energy Compaction, </li><li>Digital Forensics, </li><li>Signal Processing, </li><li>Adaptive Image Processing, </li>
+        <li>Orthogonal Subspaces</li>
+                </ul>
+      </div>
+    </div>
+  </div>
+  
+</div>
+</div>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{k_s2023,
+  author = {K S, Siju and K.P, Dr.Soman},
+  title = {SVD {Based} {Image} {Processing} {Applications}},
+  pages = {1-27},
+  date = {2023-06-23},
+  url = {https://github.com/dfolio/quarto-ieee},
+  langid = {en},
+  abstract = {This study investigates the application of Singular Value
+    Decomposition (SVD) as an effective mathematical framework for
+    various image processing tasks. SVD offers a unique decomposition
+    approach, making it suitable for applications like image
+    compression, denoising, and watermarking by enabling optimal rank
+    approximations and noise separation. The robustness of SVD in
+    handling large matrices allows it to capture key image
+    characteristics, preserving essential features while reducing data
+    requirements. By leveraging SVD’s ability to separate data into
+    dominant and subdominant subspaces, this research demonstrates
+    enhanced image compression, effective noise reduction, and secure
+    watermark embedding. Experimental results validate SVD’s utility in
+    optimizing image storage, clarity, and fidelity, with potential
+    implications for advancing adaptive image processing techniques.}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-k_s2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+<div class="">S.
+K S and Dr. S. K.P, <span>“SVD Based Image Processing
+Applications,”</span> <em>GitHUB</em>. pp. 1–27, 23-Jun-2023 [Online].
+Available: <a href="https://github.com/dfolio/quarto-ieee">https://github.com/dfolio/quarto-ieee</a></div>
+</div></div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
