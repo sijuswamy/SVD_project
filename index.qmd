@@ -16,7 +16,7 @@ author:
       - name: CEN
     orcid: 0009-0004-1983-5574
     email: siju.swamy@saintgits.org
-    url: https://dfolio.fr/
+    url: https://github.com/sijuswamy/SVD_project
     membership: "Member, ISTE"
     attributes:
       corresponding: true
