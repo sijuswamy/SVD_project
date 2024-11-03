@@ -46,7 +46,7 @@ citation:
   container-title: GitHUB
   page: 1-27
   type: article
-  issued: 2023-06-23
+  issued: 2024-11-04
   url: https://github.com/sijuswamy/SVD_project
   pdf-url: https://github.com/sijuswamy/SVD_project/blob/main/A%20Study%20on%20SVD%20Based%20Image%20Processing%20Applications.pdf
 
