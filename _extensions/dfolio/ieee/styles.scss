@@ -84,6 +84,7 @@ $headings-color:              inherit !default;
   line-height: 30px!important
 }
 #quarto-document-content{
+  
   a{
     &:not([href]), &:not([class]){
       color: $link-color;
